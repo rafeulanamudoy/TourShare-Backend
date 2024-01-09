@@ -11,7 +11,7 @@ const duplicateError = (error: MongoError) => {
 
   return {
     statusCode,
-    message: "Duplicate Entry",
+    message: "Duplicate Entry.Phone Number And Email Must Have To Unique",
     errorMessages: errors,
   };
 };
