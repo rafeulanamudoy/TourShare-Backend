@@ -15,17 +15,17 @@ const signUpZodSchema = z.object({
         required_error: "Email is Required",
       })
       .email("this is not a valid email"),
-  }),
-  phoneNumber: z.string({
-    required_error: "phoneNumber is Required",
-  }),
-  profileImage: z
-    .string({
-      required_error: "profileImage is Required",
-    })
-    .url({ message: "profileImage must be a valid URL" }),
-  password: z.string({
-    required_error: "Password is Required",
+    phoneNumber: z.string({
+      required_error: "phoneNumber is Required",
+    }),
+    profileImage: z
+      .string({
+        required_error: "profileImage is Required",
+      })
+      .url({ message: "profileImage must be a valid URL" }),
+    password: z.string({
+      required_error: "Password is Required",
+    }),
   }),
 });
 

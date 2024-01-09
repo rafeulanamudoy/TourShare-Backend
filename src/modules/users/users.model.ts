@@ -1,36 +1,49 @@
 import { Schema, model } from "mongoose";
 import { IUser } from "./users.interface";
-
-const userSchema = new Schema<IUser>({
-  name: {
-    firstName: {
+import bcrypt from "bcrypt";
+import config from "../../config";
+const userSchema = new Schema<IUser>(
+  {
+    name: {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    profileImage: {
       type: String,
       required: true,
     },
-    lastName: {
+    password: {
       type: String,
       required: true,
+      select: false,
     },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  phoneNumber: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  profileImage: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    select: false,
-  },
+  {
+    timestamps: true,
+  }
+);
+userSchema.pre("save", async function (next) {
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bycrypt_salt_rounds)
+  );
+  next();
 });
 
 export const User = model<IUser>("User", userSchema);

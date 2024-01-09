@@ -9,7 +9,8 @@ import config from "../config";
 import handleValidationError from "../error/handleValidationError";
 import handleCastError from "../error/handleCastError";
 import duplicateError from "../error/handleDuplicateError";
-import ApiError from "../error/hadnleApiError";
+import ApiError from "../error/handleApiError";
+import handleZodError from "../error/handleZodError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500;
@@ -31,6 +32,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorMessages = simplifiedError?.errorMessages;
+  } else if (err instanceof ZodError) {
+    const simplifiedError = handleZodError(err);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorMessages = simplifiedError.errorMessages;
   } else if (err instanceof ApiError) {
     statusCode = err.statusCode;
     message = err?.message;
