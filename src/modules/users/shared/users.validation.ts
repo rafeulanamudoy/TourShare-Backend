@@ -38,6 +38,7 @@ const signUpZodSchema = z.object({
     password: z.string({
       required_error: "Password is Required",
     }),
+    secret_key: z.string({}).optional(),
   }),
 });
 const loginZodSchema = z.object({
