@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ENUM_USER_ROLE } from "../../../enums/user";
 
 const signUpZodSchema = z.object({
   body: z.object({
@@ -15,6 +16,17 @@ const signUpZodSchema = z.object({
         required_error: "Email is Required",
       })
       .email("this is not a valid email"),
+
+    role: z
+      .string({
+        required_error: "Role is Required",
+      })
+      .refine(
+        (value) => {
+          return (Object.values(ENUM_USER_ROLE) as string[]).includes(value);
+        },
+        { message: "Invalid role" }
+      ),
     phoneNumber: z.string({
       required_error: "phoneNumber is Required",
     }),

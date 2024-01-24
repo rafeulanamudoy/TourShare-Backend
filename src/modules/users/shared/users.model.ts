@@ -1,7 +1,10 @@
 import { Schema, model } from "mongoose";
 import { IUser, IUserExistReturn, UserModel } from "./users.interface";
 import bcrypt from "bcrypt";
-import config from "../../config";
+import config from "../../../config";
+
+import { UserRole } from "./users.const";
+
 const userSchema = new Schema<IUser, UserModel>(
   {
     name: {
@@ -18,6 +21,10 @@ const userSchema = new Schema<IUser, UserModel>(
       type: String,
       required: true,
       unique: true,
+    },
+    role: {
+      type: String,
+      enum: UserRole,
     },
     phoneNumber: {
       type: String,

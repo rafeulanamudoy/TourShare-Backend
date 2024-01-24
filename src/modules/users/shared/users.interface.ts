@@ -1,4 +1,5 @@
 import mongoose, { Model } from "mongoose";
+import { ENUM_USER_ROLE } from "../../../enums/user";
 
 export type IUser = {
   password: string;
@@ -8,6 +9,9 @@ export type IUser = {
     firstName: string;
     lastName: string;
   };
+  phoneNumber: string;
+  profileImage: string;
+  role: ENUM_USER_ROLE;
 };
 export type IUserExistReturn = {
   _id: mongoose.Types.ObjectId;
@@ -15,6 +19,7 @@ export type IUserExistReturn = {
 
   password: string;
 };
+
 export type ILoginUser = {
   email: string;
   password: string;
@@ -37,3 +42,4 @@ export type UserModel = {
     savedPassword: string
   ): Promise<boolean>;
 } & Model<IUser>;
+export type IUserRole = "customer" | "admin" | "superAdmin";

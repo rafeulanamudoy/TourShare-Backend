@@ -1,10 +1,10 @@
 import httpStatus from "http-status";
-import ApiError from "../../error/handleApiError";
+import ApiError from "../../../error/handleApiError";
 import { IUser, ILoginUser, ILoginUserResponse } from "./users.interface";
 import { User } from "./users.model";
-import config from "../../config";
+import config from "../../../config";
 import { Secret } from "jsonwebtoken";
-import { jwtHelpers } from "../../helpers/jwtHelpers";
+import { jwtHelpers } from "../../../helpers/jwtHelpers";
 
 const createUser = async (user: IUser): Promise<IUser | null> => {
   // console.log(user)

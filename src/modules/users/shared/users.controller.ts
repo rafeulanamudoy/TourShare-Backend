@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import { UserService } from "./users.service";
-import sendResponse from "../../shared/sendResponse";
-import catchAsync from "../../shared/catchAsync";
+import { SharedService } from "./shared.service";
+import sendResponse from "../../../shared/sendResponse";
+import catchAsync from "../../../shared/catchAsync";
 import httpStatus from "http-status";
-import config from "../../config";
+import config from "../../../config";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const user = req.body;
 
-  const result = await UserService.createUser(user);
+  const result = await SharedService.createUser(user);
 
   if (result !== null) {
     const { password, ...others } = result;
@@ -24,7 +24,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
-  const result = await UserService.loginUser(loginData);
+  const result = await SharedService.loginUser(loginData);
 
   const cookieOptions = {
     secure: config.env === "production",
