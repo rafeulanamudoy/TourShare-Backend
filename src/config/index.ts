@@ -8,6 +8,12 @@ export default {
   database_url: process.env.DATABASE_URL,
   bycrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
   super_admin_secret_key: process.env.SUPER_ADMIN_SECRET_KEY,
+  cloudinary: {
+    cloud_name: process.env.CLOUD_NAME,
+    cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+    cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
+  },
+
   jwt: {
     secret: process.env.JWT_SECRET,
     refresh_secret: process.env.JWT_REFRESH_SECRET,

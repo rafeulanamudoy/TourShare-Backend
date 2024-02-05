@@ -5,6 +5,12 @@ const validateRequest =
   (schema: AnyZodObject | ZodEffects<AnyZodObject>) =>
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      if (req.file) {
+        req.body.profileImage = req.file.path;
+      }
+      if (typeof req.body.name === "string") {
+        req.body.name = JSON.parse(req.body.name);
+      }
       await schema.parseAsync({
         body: req.body,
         query: req.query,

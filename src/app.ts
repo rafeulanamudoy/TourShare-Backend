@@ -4,7 +4,7 @@ import httpStatus from "http-status";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 import { routes } from "./routes";
 import cookieParser from "cookie-parser";
-
+import bodyParser from "body-parser";
 const app: Application = express();
 
 app.use(cors());
@@ -12,6 +12,8 @@ app.use(cookieParser());
 //parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use("/api/v1", routes);
 

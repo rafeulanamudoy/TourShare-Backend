@@ -5,11 +5,13 @@ import { User } from "./users.model";
 import config from "../../../config";
 import { Secret } from "jsonwebtoken";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import { cloudanryUploads } from "../../../utilities/cloudinary";
 
 const createUser = async (user: IUser): Promise<IUser | null> => {
-  // console.log(user)
+  console.log(user);
 
   const createUser = (await User.create(user)).toObject();
+
   //console.log(createUser, 'im to check from service is user created')
   return createUser;
 };
@@ -47,7 +49,40 @@ const loginUser = async (
     email: userEmail,
   };
 };
+const refreshToken = async (token: string) => {
+  let verifiedToken = null;
+  try {
+    verifiedToken = jwtHelpers.verifyToken(
+      token,
+      config.jwt.refresh_secret as Secret
+    );
+  } catch (err) {
+    throw new ApiError(httpStatus.FORBIDDEN, "Invalid Refresh Token");
+  }
+  console.log("verified token from service", verifiedToken);
+  const { _id } = verifiedToken;
+
+  const isUserExist = await User.findOne({ _id }, { _id: 1, role: 1 });
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User does not exist");
+  }
+
+  const newAccessToken = jwtHelpers.createToken(
+    {
+      _id: isUserExist._id,
+      role: isUserExist.role,
+    },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string
+  );
+
+  return {
+    accessToken: newAccessToken,
+  };
+};
+
 export const UserService = {
   createUser,
   loginUser,
+  refreshToken,
 };

@@ -34,7 +34,14 @@ const signUpZodSchema = z.object({
       .string({
         required_error: "profileImage is Required",
       })
-      .url({ message: "profileImage must be a valid URL" }),
+      .refine(
+        (value) => {
+          // Add your custom logic to check if the value is a valid file path
+          // For example, you can check if it starts with "uploads" or use other criteria
+          return value.startsWith("uploads");
+        },
+        { message: "profileImage must be a valid file path" }
+      ),
     password: z.string({
       required_error: "Password is Required",
     }),

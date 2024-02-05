@@ -32,8 +32,14 @@ const userSchema = new Schema<IUser, UserModel>(
       unique: true,
     },
     profileImage: {
-      type: String,
-      required: true,
+      url: {
+        type: String,
+        requird: true,
+      },
+      public_id: {
+        type: String,
+        requird: true,
+      },
     },
     password: {
       type: String,

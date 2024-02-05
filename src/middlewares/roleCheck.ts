@@ -8,6 +8,8 @@ const roleCheck =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { role } = req.body;
+      //console.log(JSON.parse(req.body.name));
+      // console.log(req.file), "from roleCheck middleware";
       if (role !== requiredRole) {
         throw new ApiError(
           400,

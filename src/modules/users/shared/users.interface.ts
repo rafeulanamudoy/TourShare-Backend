@@ -10,7 +10,10 @@ export type IUser = {
     lastName: string;
   };
   phoneNumber: string;
-  profileImage: string;
+  profileImage: {
+    url: string;
+    public_id: string;
+  };
   role: ENUM_USER_ROLE;
 };
 export type IUserExistReturn = {
