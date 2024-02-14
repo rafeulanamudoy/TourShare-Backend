@@ -4,7 +4,7 @@ import config from "../config";
 import ApiError from "../error/handleApiError";
 
 const cloudinary = require("cloudinary").v2;
-
+const mainFolder = "tourshare";
 interface CloudinaryConfig {
   cloud_name: string;
   api_key: string;
@@ -32,7 +32,7 @@ export const cloudinaryUploads = (
       file,
       {
         resource_type: "auto",
-        folder: folder,
+        folder: `${mainFolder}/${folder}`,
       },
       (error: any, result: UploadApiResponse) => {
         if (error) {

@@ -2,11 +2,11 @@ import express from "express";
 
 import { AuthValidation } from "../shared/users.validation";
 import validateRequest from "../../../middlewares/validateRequest";
-import { AdminController } from "./admin.controller";
 
 import roleCheck from "../../../middlewares/roleCheck";
 import { ENUM_USER_ROLE } from "../../../enums/user";
 import { multerUpload } from "../../../utilities/multer";
+import { UserController } from "../shared/users.controller";
 
 const router = express.Router();
 
@@ -18,5 +18,5 @@ router.post(
   roleCheck(ENUM_USER_ROLE.ADMIN),
   validateRequest(AuthValidation.signUpZodSchema),
 
-  AdminController.createUser
+  UserController.createUser
 );

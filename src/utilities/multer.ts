@@ -3,7 +3,6 @@ import multer, { Multer, FileFilterCallback } from "multer";
 import ApiError from "../error/handleApiError";
 // Adjust the path accordingly
 
-import path from "path";
 const DIR = "./uploads";
 
 /* 
@@ -43,6 +42,6 @@ const fileFilter = (
 
 export const multerUpload: Multer = multer({
   storage: storage,
-  //  limits: { fileSize: 1024 * 1024 },
+  limits: { fileSize: 1024 * 1024 },
   fileFilter: fileFilter,
 });

@@ -5,7 +5,31 @@ import catchAsync from "../../../shared/catchAsync";
 import httpStatus from "http-status";
 import config from "../../../config";
 import { UserService } from "./users.service";
-import { IRefreshTokenResponse } from "./users.interface";
+import { IRefreshTokenResponse, IUser } from "./users.interface";
+import { ENUM_USER_ROLE } from "../../../enums/user";
+import {
+  UploadsResponse,
+  cloudinaryUploads,
+} from "../../../utilities/cloudinary";
+import {
+  setUserfunction,
+  updateUserFunction,
+} from "../../../utilities/cloudenrayUpload";
+
+const createUser = catchAsync(async (req: Request, res: Response) => {
+  const userBody = await setUserfunction(req);
+  const result = await UserService.createUser(userBody);
+
+  if (result !== null) {
+    const { password, ...others } = result;
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: `${others.role} Account created successfully`,
+      data: others,
+    });
+  }
+});
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
@@ -48,7 +72,39 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const updateData = await updateUserFunction(req);
+  //  console.log(updateData, "i am from user controller");
+
+  const result = await UserService.updateSingleUser(id, updateData);
+
+  sendResponse<IUser>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "User updated successfully",
+    data: result,
+  });
+});
+const deleteSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await UserService.deleteSingleUser(id);
+
+  sendResponse<IUser>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "User deleted  successfully",
+    data: result,
+  });
+});
+
 export const UserController = {
+  createUser,
   loginUser,
   refreshToken,
+  updateSingleUser,
+  deleteSingleUser,
 };

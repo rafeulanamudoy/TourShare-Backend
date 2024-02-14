@@ -5,10 +5,9 @@ import { User } from "./users.model";
 import config from "../../../config";
 import { Secret } from "jsonwebtoken";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
-import { cloudanryUploads } from "../../../utilities/cloudinary";
 
 const createUser = async (user: IUser): Promise<IUser | null> => {
-  console.log(user);
+  // console.log(user);
 
   const createUser = (await User.create(user)).toObject();
 
@@ -80,9 +79,24 @@ const refreshToken = async (token: string) => {
     accessToken: newAccessToken,
   };
 };
+const updateSingleUser = async (
+  id: string,
+  payload: Partial<IUser>
+): Promise<IUser | null> => {
+  const result = await User.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+const deleteSingleUser = async (id: string): Promise<IUser | null> => {
+  const deleteUser = await User.findByIdAndDelete(id);
+  return deleteUser;
+};
 
 export const UserService = {
   createUser,
   loginUser,
   refreshToken,
+  updateSingleUser,
+  deleteSingleUser,
 };

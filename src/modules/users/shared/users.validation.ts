@@ -32,16 +32,15 @@ const signUpZodSchema = z.object({
     }),
     profileImage: z
       .string({
-        required_error: "profileImage is Required",
+        // required_error: "profileImage is Required",
       })
       .refine(
         (value) => {
-          // Add your custom logic to check if the value is a valid file path
-          // For example, you can check if it starts with "uploads" or use other criteria
           return value.startsWith("uploads");
         },
         { message: "profileImage must be a valid file path" }
-      ),
+      )
+      .optional(),
     password: z.string({
       required_error: "Password is Required",
     }),
@@ -60,8 +59,38 @@ const loginZodSchema = z.object({
     }),
   }),
 });
+const updateProfile = z.object({
+  body: z.object({
+    name: z.object({
+      firstName: z.string({
+        required_error: "First Name is Required",
+      }),
+      lastName: z.string({
+        required_error: "Last  Name is Required",
+      }),
+    }),
+
+    profileImage: z
+      .string({
+        required_error: "profileImage is Required",
+      })
+      .refine(
+        (value) => {
+          // Add your custom logic to check if the value is a valid file path
+          // For example, you can check if it starts with "uploads" or use other criteria
+          return value.startsWith("uploads");
+        },
+        { message: "profileImage must be a valid file path" }
+      ),
+    password: z.string({
+      required_error: "Password is Required",
+    }),
+    secret_key: z.string({}).optional(),
+  }),
+});
 
 export const AuthValidation = {
   signUpZodSchema,
   loginZodSchema,
+  updateProfile,
 };
