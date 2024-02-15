@@ -18,6 +18,19 @@ import {
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const userBody = await setUserfunction(req);
+
+  // Check if userBody is undefined
+  if (userBody === undefined) {
+    // Handle the case where setUserfunction returns undefined
+    sendResponse(res, {
+      success: false,
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      message: "Error creating user: user data is undefined",
+      data: null,
+    });
+    return;
+  }
+
   const result = await UserService.createUser(userBody);
 
   if (result !== null) {
@@ -30,7 +43,6 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
     });
   }
 });
-
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
   const result = await UserService.loginUser(loginData);
@@ -74,7 +86,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
 const updateSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
-  const updateData = await updateUserFunction(req);
+  const updateData = await updateUserFunction(req, id);
   //  console.log(updateData, "i am from user controller");
 
   const result = await UserService.updateSingleUser(id, updateData);

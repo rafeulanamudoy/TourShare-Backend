@@ -47,3 +47,15 @@ export const cloudinaryUploads = (
     );
   });
 };
+
+export const cloudinaryDelete = (id: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(id, (error: any, result: any) => {
+      if (error) {
+        reject(new ApiError(400, error));
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};

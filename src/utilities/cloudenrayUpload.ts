@@ -1,23 +1,60 @@
 import { Request, Response } from "express";
-import { UploadsResponse, cloudinaryUploads } from "./cloudinary";
+import {
+  UploadsResponse,
+  cloudinaryDelete,
+  cloudinaryUploads,
+} from "./cloudinary";
+import { User } from "../modules/users/shared/users.model";
+import { IUser } from "../modules/users/shared/users.interface";
 
 export const setUserfunction = async (req: Request) => {
-  let profileImage = { url: "", public_id: "" };
   if (req.file) {
     const cloudinaryResponse: UploadsResponse = await cloudinaryUploads(
       req.file.path,
 
       "profileImage"
     );
-
-    profileImage = {
-      url: cloudinaryResponse.url,
-      public_id: cloudinaryResponse.public_id,
+    const user: IUser = {
+      name: req.body.name,
+      phoneNumber: req.body.phoneNumber,
+      email: req.body.email,
+      role: req.body.role,
+      password: req.body.password,
+      profileImage: {
+        url: cloudinaryResponse.url,
+        public_id: cloudinaryResponse.public_id,
+      },
     };
-    // console.log(cloudinaryResponse, "cloudenray response");
+    return user;
+  }
+};
+
+export const updateUserFunction = async (req: Request, id: string) => {
+  let profileImage = { url: "", public_id: "" };
+
+  if (req.file) {
+    const user = await User.findById(id);
+    if (user?.profileImage.public_id) {
+      // Start both deletion and upload operations concurrently
+      const deletePromise = cloudinaryDelete(user?.profileImage?.public_id);
+      const uploadPromise = cloudinaryUploads(req.file.path, "profileImage");
+
+      // Wait for both deletion and upload operations to complete
+      const [deleteResponse, cloudinaryResponse] = await Promise.all([
+        deletePromise,
+        uploadPromise,
+      ]);
+
+      // Construct the profileImage object with the new URL and public_id
+      profileImage = {
+        url: cloudinaryResponse.url,
+        public_id: cloudinaryResponse.public_id,
+      };
+    }
   }
 
-  const user = {
+  // Construct the updated user object with the provided data and the new profileImage
+  const updatedUser = {
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
     email: req.body.email,
@@ -25,36 +62,6 @@ export const setUserfunction = async (req: Request) => {
     password: req.body.password,
     profileImage,
   };
-  return user;
-};
 
-export const updateUserFunction = async (req: Request) => {
-  console.log(req.body, "to check body");
-  console.log(req.file, "to check file");
-
-  let profileImage = { url: "", public_id: "" };
-  if (req.file) {
-    const cloudinaryResponse: UploadsResponse = await cloudinaryUploads(
-      req.file.path,
-
-      "profileImage"
-    );
-
-    profileImage = {
-      url: cloudinaryResponse.url,
-      public_id: cloudinaryResponse.public_id,
-    };
-    return {
-      name: req.body.name,
-      phoneNumber: req.body.phoneNumber,
-      email: req.body.email,
-      role: req.body.role,
-      password: req.body.password,
-      profileImage,
-    };
-    // console.log(cloudinaryResponse, "cloudenray response");
-  }
-
-  // console.log(user, "to check user from cloudenary set user function");
-  return req.body;
+  return updatedUser;
 };
