@@ -45,6 +45,11 @@ export const updateUserFunction = async (req: Request, id: string) => {
         uploadPromise,
       ]);
 
+      console.log(
+        deleteResponse,
+        cloudinaryResponse,
+        "to ccheck response in promise.all"
+      );
       // Construct the profileImage object with the new URL and public_id
       profileImage = {
         url: cloudinaryResponse.url,
