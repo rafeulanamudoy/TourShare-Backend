@@ -20,6 +20,7 @@ const userSchema = new Schema<IUser, UserModel>(
     email: {
       type: String,
       required: true,
+      index: true,
       unique: true,
     },
     role: {
@@ -29,6 +30,7 @@ const userSchema = new Schema<IUser, UserModel>(
     phoneNumber: {
       type: String,
       required: true,
+      index: true,
       unique: true,
     },
     profileImage: {

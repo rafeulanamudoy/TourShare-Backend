@@ -1,18 +1,38 @@
 import httpStatus from "http-status";
 import ApiError from "../../../error/handleApiError";
-import { IUser, ILoginUser, ILoginUserResponse } from "./users.interface";
+import {
+  IUser,
+  ILoginUser,
+  ILoginUserResponse,
+  IUserSignUpResponse,
+} from "./users.interface";
 import { User } from "./users.model";
 import config from "../../../config";
 import { Secret } from "jsonwebtoken";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
 
-const createUser = async (user: IUser): Promise<IUser | null> => {
+const createUser = async (user: IUser): Promise<IUserSignUpResponse | null> => {
   // console.log(user);
 
-  const createUser = (await User.create(user)).toObject();
+  const createUser = await User.create(user);
+  const { _id, email: userEmail, role } = createUser;
+  const accessToken = jwtHelpers.createToken(
+    { _id, userEmail, role },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string
+  );
+  const refreshToken = jwtHelpers.createToken(
+    { _id, userEmail, role },
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_expires_in as string
+  );
 
   //console.log(createUser, 'im to check from service is user created')
-  return createUser;
+  return {
+    ...createUser.toObject(),
+    accessToken,
+    refreshToken,
+  };
 };
 
 const loginUser = async (

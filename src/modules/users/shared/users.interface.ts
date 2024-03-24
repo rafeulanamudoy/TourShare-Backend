@@ -16,6 +16,10 @@ export type IUser = {
   };
   role: ENUM_USER_ROLE;
 };
+export type IUserSignUpResponse = IUser & {
+  accessToken: string;
+  refreshToken: string;
+};
 export type IUserExistReturn = {
   _id: mongoose.Types.ObjectId;
   email: string;

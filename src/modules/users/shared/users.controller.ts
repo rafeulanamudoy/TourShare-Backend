@@ -6,11 +6,7 @@ import httpStatus from "http-status";
 import config from "../../../config";
 import { UserService } from "./users.service";
 import { IRefreshTokenResponse, IUser } from "./users.interface";
-import { ENUM_USER_ROLE } from "../../../enums/user";
-import {
-  UploadsResponse,
-  cloudinaryUploads,
-} from "../../../utilities/cloudinary";
+
 import {
   setUserfunction,
   updateUserFunction,
@@ -45,6 +41,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 });
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
+  console.log(loginData, "check login data");
   const result = await UserService.loginUser(loginData);
 
   const cookieOptions = {

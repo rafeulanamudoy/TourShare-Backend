@@ -20,3 +20,8 @@ router.post(
 
   UserController.createUser
 );
+router.patch(
+  "/:id",
+  multerUpload.single("profileImage"),
+  UserController.updateSingleUser
+);
