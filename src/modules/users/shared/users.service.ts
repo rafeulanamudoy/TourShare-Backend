@@ -41,6 +41,11 @@ const loginUser = async (
   const { email, password } = payload;
 
   const isUserExist = await User.isUserExist(email);
+
+  console.log(isUserExist, "check database password");
+
+  console.log(password, "check user given password");
+  //console.log(isUserExist);
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, "User Doesn,t Exist");
   }
@@ -58,7 +63,7 @@ const loginUser = async (
     config.jwt.expires_in as string
   );
   const refreshToken = jwtHelpers.createToken(
-    { _id, userEmail },
+    { _id, userEmail, role },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string
   );
@@ -89,6 +94,7 @@ const refreshToken = async (token: string) => {
     {
       _id: isUserExist._id,
       role: isUserExist.role,
+      userEmail: isUserExist.email,
     },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
@@ -112,10 +118,15 @@ const deleteSingleUser = async (id: string): Promise<IUser | null> => {
   return deleteUser;
 };
 
+const getSingleUser = async (id: string) => {
+  const user = await User.findById(id);
+  return user;
+};
 export const UserService = {
   createUser,
   loginUser,
   refreshToken,
   updateSingleUser,
   deleteSingleUser,
+  getSingleUser,
 };

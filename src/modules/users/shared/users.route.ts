@@ -15,3 +15,8 @@ router.post(
 
   UserController.loginUser
 );
+router.get(
+  "/:id",
+
+  UserController.getSingleUser
+);

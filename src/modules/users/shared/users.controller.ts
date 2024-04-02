@@ -46,7 +46,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 });
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
-  console.log(loginData, "check login data");
+  //console.log(loginData, "check login data");
   const result = await UserService.loginUser(loginData);
 
   const cookieOptions = {
@@ -114,6 +114,19 @@ const deleteSingleUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await UserService.getSingleUser(id);
+
+  sendResponse<IUser>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "User get  successfully",
+    data: result,
+  });
+});
 
 export const UserController = {
   createUser,
@@ -121,4 +134,5 @@ export const UserController = {
   refreshToken,
   updateSingleUser,
   deleteSingleUser,
+  getSingleUser,
 };

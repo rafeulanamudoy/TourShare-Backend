@@ -5,27 +5,21 @@ import {
   cloudinaryUploads,
 } from "./cloudinary";
 import { User } from "../modules/users/shared/users.model";
-import { IUser } from "../modules/users/shared/users.interface";
 
 export const setUserfunction = async (req: Request) => {
   if (req.file) {
     const cloudinaryResponse: UploadsResponse = await cloudinaryUploads(
       req.file.path,
-
       "profileImage"
     );
-    const user: IUser = {
-      name: req.body.name,
-      phoneNumber: req.body.phoneNumber,
-      email: req.body.email,
-      role: req.body.role,
-      password: req.body.password,
+
+    return {
+      ...req.body,
       profileImage: {
         url: cloudinaryResponse.url,
         public_id: cloudinaryResponse.public_id,
       },
     };
-    return user;
   }
 };
 
