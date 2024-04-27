@@ -50,7 +50,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.loginUser(loginData);
 
   const cookieOptions = {
-    secure: config.env === "production",
+    secure: config.env === "development",
     httpOnly: true,
   };
 
@@ -89,7 +89,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 const updateSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updateData = await updateUserFunction(req, id);
-  //  console.log(updateData, "i am from user controller");
+  console.log(updateData, "i am from user controller");
 
   const result = await UserService.updateSingleUser(id, updateData);
 

@@ -24,5 +24,6 @@ router.post(
 router.patch(
   "/:id",
   multerUpload.single("profileImage"),
+
   UserController.updateSingleUser
 );

@@ -25,6 +25,8 @@ export const setUserfunction = async (req: Request) => {
 
 export const updateUserFunction = async (req: Request, id: string) => {
   let profileImage = { url: "", public_id: "" };
+  // console.log(req.file, "check request file");
+  console.log(req.body);
 
   if (req.file) {
     const user = await User.findById(id);
@@ -39,11 +41,11 @@ export const updateUserFunction = async (req: Request, id: string) => {
         uploadPromise,
       ]);
 
-      console.log(
-        deleteResponse,
-        cloudinaryResponse,
-        "to ccheck response in promise.all"
-      );
+      // console.log(
+      //   deleteResponse,
+      //   cloudinaryResponse,
+      //   "to ccheck response in promise.all"
+      // );
       // Construct the profileImage object with the new URL and public_id
       profileImage = {
         url: cloudinaryResponse.url,
@@ -51,16 +53,15 @@ export const updateUserFunction = async (req: Request, id: string) => {
       };
     }
   }
-
-  // Construct the updated user object with the provided data and the new profileImage
   const updatedUser = {
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
     email: req.body.email,
     role: req.body.role,
     password: req.body.password,
-    profileImage,
+    profileImage: req.file && profileImage,
   };
 
   return updatedUser;
+  // Construct the updated user object with the provided data and the new profileImage
 };

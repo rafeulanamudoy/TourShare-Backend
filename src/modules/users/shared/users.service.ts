@@ -42,9 +42,9 @@ const loginUser = async (
 
   const isUserExist = await User.isUserExist(email);
 
-  console.log(isUserExist, "check database password");
+  console.log(isUserExist, "check user");
 
-  console.log(password, "check user given password");
+  //console.log(password, "check user given password");
   //console.log(isUserExist);
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, "User Doesn,t Exist");
@@ -70,6 +70,7 @@ const loginUser = async (
   return {
     accessToken,
     refreshToken,
+    profileImage: isUserExist?.profileImage,
   };
 };
 const refreshToken = async (token: string) => {
