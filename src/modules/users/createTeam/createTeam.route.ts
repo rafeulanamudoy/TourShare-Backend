@@ -11,3 +11,8 @@ router.post(
   validateRequest(CreateTeamValidation.createTeamSchema),
   CreateTeamController.createTeam
 );
+router.get(
+  "/",
+
+  CreateTeamController.getTeams
+);

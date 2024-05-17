@@ -19,6 +19,18 @@ const createTeam = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getTeams = catchAsync(async (req: Request, res: Response) => {
+  const result = await CreateTeamService.getTeams();
+
+  sendResponse<ICreateTeam[]>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "Team get   successfully",
+    data: result,
+  });
+});
 export const CreateTeamController = {
   createTeam,
+  getTeams,
 };

@@ -2,10 +2,14 @@ import { ICreateTeam } from "./createTeam.interface";
 import { CreateTeam } from "./createTeam.model";
 
 const createTeam = async (payload: ICreateTeam) => {
-  const createTeam = await CreateTeam.create(payload);
-  return createTeam;
+  const result = await CreateTeam.create(payload);
+  return result;
 };
-
+const getTeams = async () => {
+  const result = await CreateTeam.find({});
+  return result;
+};
 export const CreateTeamService = {
   createTeam,
+  getTeams,
 };
