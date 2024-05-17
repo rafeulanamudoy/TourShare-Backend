@@ -30,7 +30,20 @@ const getTeams = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getSingleTeam = catchAsync(async (req: Request, res: Response) => {
+  const email = req.params.email;
+  const result = await CreateTeamService.getSingleTeam(email);
+
+  sendResponse<ICreateTeam>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "Single Team get   successfully",
+    data: result,
+  });
+});
 export const CreateTeamController = {
   createTeam,
   getTeams,
+  getSingleTeam,
 };

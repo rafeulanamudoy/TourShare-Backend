@@ -9,7 +9,13 @@ const getTeams = async () => {
   const result = await CreateTeam.find({});
   return result;
 };
+
+const getSingleTeam = async (email: string) => {
+  const result = await CreateTeam.findOne({ email: email });
+  return result;
+};
 export const CreateTeamService = {
   createTeam,
   getTeams,
+  getSingleTeam,
 };

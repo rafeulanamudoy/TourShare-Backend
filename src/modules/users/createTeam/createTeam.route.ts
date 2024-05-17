@@ -16,3 +16,5 @@ router.get(
 
   CreateTeamController.getTeams
 );
+
+router.get("/:email", CreateTeamController.getSingleTeam);

@@ -27,7 +27,7 @@ const moduleRoutes = [
     route: SuperAdminRoutes,
   },
   {
-    path: "/createTeam",
+    path: "/team",
     route: CreateTeamRoutes,
   },
 ];
