@@ -4,7 +4,8 @@ import { AdminRoutes } from "../modules/users/admin/admin.route";
 import { CustomerRoutes } from "../modules/users/customer/customer.route";
 import { SuperAdminRoutes } from "../modules/users/superAdmin/superAdmin.route";
 import { UserRoutes } from "../modules/users/shared/users.route";
-import { CreateTeamRoutes } from "../modules/users/createTeam/createTeam.route";
+import { CreateTeamRoutes } from "../modules/team/createTeam/createTeam.route";
+import { JoinTeamRoutes } from "../modules/team/joinTeam/joinTeam.route";
 
 const router = express.Router();
 
@@ -29,6 +30,10 @@ const moduleRoutes = [
   {
     path: "/team",
     route: CreateTeamRoutes,
+  },
+  {
+    path: "/joinTeam",
+    route: JoinTeamRoutes,
   },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export type ICreateTeam = {
   phoneNumber: string;
   email: string;
@@ -10,4 +12,5 @@ export type ICreateTeam = {
   nationalIdNumber: string;
   startDate: Date;
   endDate: Date;
+  joinPeople: Types.ObjectId[];
 };

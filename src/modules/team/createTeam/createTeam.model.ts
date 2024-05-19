@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-import { UserRole } from "../shared/users.const";
+import { UserRole } from "../../users/shared/users.const";
 import { ICreateTeam } from "./createTeam.interface";
 
 const creaTeTeamSchema = new Schema<ICreateTeam>(
@@ -46,6 +46,12 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
       type: Date,
       required: true,
     },
+    joinPeople: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "JoinTeam",
+      },
+    ],
   },
   {
     timestamps: true,
