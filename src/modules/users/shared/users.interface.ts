@@ -39,10 +39,6 @@ export type ILoginUser = {
 export type ILoginUserResponse = {
   refreshToken?: string;
   accessToken: string;
-  profileImage: {
-    url: string;
-    public_id: string;
-  };
 };
 export type IRefreshTokenResponse = {
   accessToken: string;

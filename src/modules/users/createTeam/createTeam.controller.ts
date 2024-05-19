@@ -42,8 +42,23 @@ const getSingleTeam = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const updateSingleTeam = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const updateData = req.body;
+
+  const result = await CreateTeamService.updateSingleTeam(id, updateData);
+
+  sendResponse<ICreateTeam>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "team  updated successfully",
+    data: result,
+  });
+});
 export const CreateTeamController = {
   createTeam,
   getTeams,
   getSingleTeam,
+  updateSingleTeam,
 };

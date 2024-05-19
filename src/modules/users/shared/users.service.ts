@@ -42,7 +42,7 @@ const loginUser = async (
 
   const isUserExist = await User.isUserExist(email);
 
-  console.log(isUserExist, "check user");
+  //console.log(isUserExist, "check user");
 
   //console.log(password, "check user given password");
   //console.log(isUserExist);
@@ -70,7 +70,6 @@ const loginUser = async (
   return {
     accessToken,
     refreshToken,
-    profileImage: isUserExist?.profileImage,
   };
 };
 const refreshToken = async (token: string) => {

@@ -18,3 +18,9 @@ router.get(
 );
 
 router.get("/:email", CreateTeamController.getSingleTeam);
+
+router.patch(
+  "/:id",
+
+  CreateTeamController.updateSingleTeam
+);

@@ -6,43 +6,39 @@ const createTeamSchema = z.object({
       .string({
         required_error: "Email is Required",
       })
-      .email("this is not a valid email"),
+      .email("This is not a valid email"),
 
     phoneNumber: z.string({
-      required_error: "phoneNumber is Required",
+      required_error: "Phone number is Required",
     }),
 
     address: z.string({
-      required_error: "address is Required",
+      required_error: "Address is Required",
     }),
     destination: z.string({
-      required_error: "destination is Required",
+      required_error: "Destination is Required",
     }),
     currentMembers: z.number({
-      required_error: "currentMembers is Required",
+      required_error: "Current members are Required",
     }),
     neededMembers: z.number({
-      required_error: "neededMembers is Required",
+      required_error: "Needed members are Required",
     }),
     nationalIdNumber: z.string({
-      required_error: "phoneNumber is Required",
+      required_error: "National ID number is Required",
     }),
     startDate: z.preprocess(
-      (arg) => {
-        if (typeof arg === "string" || arg instanceof Date)
-          return new Date(arg);
-      },
+      (arg) =>
+        typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,
       z.date({
-        required_error: "StartDate is Required",
+        required_error: "Start date is Required",
       })
     ),
     endDate: z.preprocess(
-      (arg) => {
-        if (typeof arg === "string" || arg instanceof Date)
-          return new Date(arg);
-      },
+      (arg) =>
+        typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,
       z.date({
-        required_error: "EndDate is Required",
+        required_error: "End date is Required",
       })
     ),
   }),
