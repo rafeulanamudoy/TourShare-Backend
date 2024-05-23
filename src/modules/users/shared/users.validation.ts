@@ -27,9 +27,14 @@ const signUpZodSchema = z.object({
         },
         { message: "Invalid role" }
       ),
-    phoneNumber: z.string({
-      required_error: "phoneNumber is Required",
-    }),
+    phoneNumber: z
+      .string({
+        required_error: "phoneNumber is Required",
+      })
+      .regex(/^\+880\d{10}$/, {
+        message:
+          "Phone number must start with +880 and be followed by exactly 10 digits",
+      }),
     profileImage: z
       .string({
         // required_error: "profileImage is Required",

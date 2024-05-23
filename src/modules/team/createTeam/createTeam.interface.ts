@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";
 
 export type ICreateTeam = {
   phoneNumber: string;
@@ -13,4 +14,6 @@ export type ICreateTeam = {
   startDate: Date;
   endDate: Date;
   joinPeople: Types.ObjectId[];
+  teamStatus: ENUM_TEAM_STATUS;
 };
+export type ITeamStatus = "ongoing" | "closed";

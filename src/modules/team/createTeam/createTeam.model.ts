@@ -2,6 +2,8 @@ import { Schema, model } from "mongoose";
 
 import { UserRole } from "../../users/shared/users.const";
 import { ICreateTeam } from "./createTeam.interface";
+import { TeamStatus } from "./createTeam.constant";
+import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";
 
 const creaTeTeamSchema = new Schema<ICreateTeam>(
   {
@@ -38,6 +40,12 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
       type: String,
       required: true,
     },
+    teamStatus: {
+      type: String,
+      enum: TeamStatus,
+      default: ENUM_TEAM_STATUS.ONGOING,
+    },
+
     startDate: {
       type: Date,
       required: true,
@@ -57,5 +65,12 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
     timestamps: true,
   }
 );
-
+creaTeTeamSchema.index({ email: 1 }, { unique: true });
+creaTeTeamSchema.index({ phoneNumber: 1 }, { unique: true });
 export const CreateTeam = model<ICreateTeam>("CreateTeam", creaTeTeamSchema);
+export const ensureIndexes = async () => {
+  await CreateTeam.syncIndexes();
+};
+
+// Call this function at application startup
+ensureIndexes();

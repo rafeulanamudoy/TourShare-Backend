@@ -1,6 +1,7 @@
 import { MongoError } from "mongodb";
 import { IGenericErrorMessage } from "../interface/error";
 const duplicateError = (error: MongoError) => {
+  /// console.log(error, "duplicate error checked from server");
   const errors: IGenericErrorMessage[] = [
     {
       path: "",
@@ -11,7 +12,10 @@ const duplicateError = (error: MongoError) => {
 
   return {
     statusCode,
-    message: "Duplicate Entry.Phone Number And Email Must Have To Unique",
+    message:
+      "Already Have a Account.Phone Number And Email Must Have To Be Unique",
+    errorCode: error.code,
+
     errorMessages: errors,
   };
 };

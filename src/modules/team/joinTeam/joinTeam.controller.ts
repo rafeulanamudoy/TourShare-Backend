@@ -3,14 +3,14 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 
 import httpStatus from "http-status";
-import { JOinTeamService } from "./joinTeam.service";
+import { JoinTeamService } from "./joinTeam.service";
 import { IJoinTeam } from "./joinTeam.interface";
 
 const createJoinTeam = catchAsync(async (req: Request, res: Response) => {
   const createTeam = req.body;
   console.log(req.body, "create team");
 
-  const result = await JOinTeamService.createJoinTeam(createTeam);
+  const result = await JoinTeamService.createJoinTeam(createTeam);
 
   sendResponse<IJoinTeam>(res, {
     success: true,
@@ -21,7 +21,7 @@ const createJoinTeam = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getJointTeams = catchAsync(async (req: Request, res: Response) => {
-  const result = await JOinTeamService.getJointTeams();
+  const result = await JoinTeamService.getJointTeams();
 
   sendResponse<IJoinTeam[]>(res, {
     success: true,
@@ -33,7 +33,7 @@ const getJointTeams = catchAsync(async (req: Request, res: Response) => {
 });
 const getSingleJoinTeam = catchAsync(async (req: Request, res: Response) => {
   const email = req.params.email;
-  const result = await JOinTeamService.getSingleJoinTeam(email);
+  const result = await JoinTeamService.getSingleJoinTeam(email);
 
   sendResponse<IJoinTeam>(res, {
     success: true,

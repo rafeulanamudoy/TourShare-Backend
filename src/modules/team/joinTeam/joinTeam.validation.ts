@@ -8,9 +8,14 @@ const joinTeamSchema = z.object({
       })
       .email("This is not a valid email"),
 
-    phoneNumber: z.string({
-      required_error: "Phone number is Required",
-    }),
+    phoneNumber: z
+      .string({
+        required_error: "Phone number is Required",
+      })
+      .regex(/^\+880\d{10}$/, {
+        message:
+          "Phone number must start with +880 and be followed by exactly 10 digits",
+      }),
 
     address: z.string({
       required_error: "Address is Required",
