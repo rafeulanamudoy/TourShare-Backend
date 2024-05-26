@@ -10,8 +10,14 @@ const getTeams = async () => {
   return result;
 };
 
-const getSingleTeam = async (email: string) => {
-  const result = await CreateTeam.findOne({ email: email });
+const getSingleTeamByEmail = async (email: string) => {
+  const result = await CreateTeam.findOne({ email: email }).populate(
+    "joinPeople"
+  );
+  return result;
+};
+const getSingleTeamById = async (id: string) => {
+  const result = await CreateTeam.findById(id);
   return result;
 };
 const updateSingleTeam = async (id: string, payload: Partial<ICreateTeam>) => {
@@ -23,6 +29,7 @@ const updateSingleTeam = async (id: string, payload: Partial<ICreateTeam>) => {
 export const CreateTeamService = {
   createTeam,
   getTeams,
-  getSingleTeam,
+  getSingleTeamByEmail,
+  getSingleTeamById,
   updateSingleTeam,
 };

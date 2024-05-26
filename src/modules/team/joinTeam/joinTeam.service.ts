@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, isValidObjectId } from "mongoose";
 import { IJoinTeam } from "./joinTeam.interface";
 import { JoinTeam } from "./joinTeam.model";
 import { CreateTeam } from "../createTeam/createTeam.model";
@@ -52,9 +52,46 @@ const getSingleJoinTeam = async (email: string) => {
   const result = await JoinTeam.findOne({ email: email });
   return result;
 };
+const updateSingleJoinTeam = async (
+  id: string,
+  payload: Partial<IJoinTeam>
+) => {
+  const result = await JoinTeam.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+const deleteSingleJoinTeam = async (id: string) => {
+  const session = await mongoose.startSession();
 
+  session.startTransaction();
+  try {
+    const deleteTeam = await JoinTeam.findOneAndDelete(
+      { _id: id },
+      { session }
+    );
+
+    if (!deleteTeam) {
+      throw new ApiError(404, "JoinTeam not found.");
+    }
+    await CreateTeam.findByIdAndUpdate(
+      deleteTeam.teamInfo,
+      { $pull: { joinPeople: deleteTeam._id } },
+      { session }
+    );
+    await session.commitTransaction();
+    session.endSession();
+    return deleteTeam;
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
+};
 export const JoinTeamService = {
   createJoinTeam,
   getJointTeams,
   getSingleJoinTeam,
+  updateSingleJoinTeam,
+  deleteSingleJoinTeam,
 };

@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 
-import { UserRole } from "../../users/shared/users.const";
 import { ICreateTeam } from "./createTeam.interface";
 import { TeamStatus } from "./createTeam.constant";
 import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";

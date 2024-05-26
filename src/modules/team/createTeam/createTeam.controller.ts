@@ -30,9 +30,21 @@ const getTeams = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-const getSingleTeam = catchAsync(async (req: Request, res: Response) => {
+const getSingleTeamByEmail = catchAsync(async (req: Request, res: Response) => {
   const email = req.params.email;
-  const result = await CreateTeamService.getSingleTeam(email);
+  const result = await CreateTeamService.getSingleTeamByEmail(email);
+
+  sendResponse<ICreateTeam>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "Single Team get   successfully",
+    data: result,
+  });
+});
+const getSingleTeamById = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await CreateTeamService.getSingleTeamById(id);
 
   sendResponse<ICreateTeam>(res, {
     success: true,
@@ -59,6 +71,7 @@ const updateSingleTeam = catchAsync(async (req: Request, res: Response) => {
 export const CreateTeamController = {
   createTeam,
   getTeams,
-  getSingleTeam,
+  getSingleTeamByEmail,
   updateSingleTeam,
+  getSingleTeamById,
 };

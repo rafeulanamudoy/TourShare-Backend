@@ -43,9 +43,39 @@ const getSingleJoinTeam = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const updateSingleJoinTeam = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const updateData = req.body;
 
+  const result = await JoinTeamService.updateSingleJoinTeam(id, updateData);
+
+  sendResponse<IJoinTeam>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "Join team  updated successfully",
+    data: result,
+  });
+});
+const deleteSingleJoinTeam = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  console.log(id, "id");
+
+  const result = await JoinTeamService.deleteSingleJoinTeam(id);
+  console.log(result);
+
+  sendResponse<IJoinTeam>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "Join team  deleted  successfully",
+    data: result,
+  });
+});
 export const JoinTeamController = {
   createJoinTeam,
   getJointTeams,
   getSingleJoinTeam,
+  updateSingleJoinTeam,
+  deleteSingleJoinTeam,
 };

@@ -19,3 +19,9 @@ router.get(
 );
 
 router.get("/:email", JoinTeamController.getSingleJoinTeam);
+router.patch(
+  "/:id",
+
+  JoinTeamController.updateSingleJoinTeam
+);
+router.delete("/:id", JoinTeamController.deleteSingleJoinTeam);

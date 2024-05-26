@@ -1,6 +1,8 @@
 import { Schema, model } from "mongoose";
 
 import { IJoinTeam } from "./joinTeam.interface";
+import { JoinTeamStatus } from "./joinTeam.const";
+import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
 const creaTeTeamSchema = new Schema<IJoinTeam>(
   {
@@ -28,6 +30,11 @@ const creaTeTeamSchema = new Schema<IJoinTeam>(
     nationalIdNumber: {
       type: String,
       required: true,
+    },
+    staus: {
+      type: String,
+      enum: JoinTeamStatus,
+      default: ENUM_jOIN_TEAM_STATUS.INTERESTED,
     },
     teamInfo: {
       type: Schema.Types.ObjectId,

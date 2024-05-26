@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
 export type IJoinTeam = {
   phoneNumber: string;
@@ -9,4 +10,6 @@ export type IJoinTeam = {
 
   nationalIdNumber: string;
   teamInfo: Types.ObjectId;
+  staus: ENUM_jOIN_TEAM_STATUS;
 };
+export type IJoinTeamStatus = "interested" | "notInterested";
