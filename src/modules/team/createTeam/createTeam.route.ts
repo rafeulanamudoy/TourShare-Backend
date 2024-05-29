@@ -25,3 +25,9 @@ router.patch(
 
   CreateTeamController.updateSingleTeam
 );
+
+router.patch(
+  "/accept/:id",
+  validateRequest(CreateTeamValidation.acceptTeamSchema),
+  CreateTeamController.acceptTeam
+);

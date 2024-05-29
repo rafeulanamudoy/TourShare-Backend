@@ -10,6 +10,6 @@ export type IJoinTeam = {
 
   nationalIdNumber: string;
   teamInfo: Types.ObjectId;
-  staus: ENUM_jOIN_TEAM_STATUS;
+  status: ENUM_jOIN_TEAM_STATUS;
 };
-export type IJoinTeamStatus = "interested" | "notInterested";
+export type IJoinTeamStatus = "accepted" | "notAccepted" | "pending";

@@ -68,10 +68,25 @@ const updateSingleTeam = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const acceptTeam = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const updateData = req.body;
+
+  const result = await CreateTeamService.acceptTeam(id, updateData);
+
+  sendResponse<ICreateTeam>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "team  accept successfully",
+    data: result,
+  });
+});
 export const CreateTeamController = {
   createTeam,
   getTeams,
   getSingleTeamByEmail,
   updateSingleTeam,
   getSingleTeamById,
+  acceptTeam,
 };

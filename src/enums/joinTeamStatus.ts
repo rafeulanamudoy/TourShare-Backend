@@ -1,4 +1,5 @@
 export enum ENUM_jOIN_TEAM_STATUS {
-  INTERESTED = "interested",
-  NOTINTERESTED = "notInterester",
+  ACCEPTED = "accepted",
+  NOTACCEPTED = "notAccepted",
+  PENDING = "pending",
 }

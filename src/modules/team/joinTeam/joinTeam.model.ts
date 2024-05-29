@@ -31,10 +31,10 @@ const creaTeTeamSchema = new Schema<IJoinTeam>(
       type: String,
       required: true,
     },
-    staus: {
+    status: {
       type: String,
       enum: JoinTeamStatus,
-      default: ENUM_jOIN_TEAM_STATUS.INTERESTED,
+      default: ENUM_jOIN_TEAM_STATUS.PENDING,
     },
     teamInfo: {
       type: Schema.Types.ObjectId,

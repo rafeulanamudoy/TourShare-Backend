@@ -1,5 +1,6 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";
+import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
 export type ICreateTeam = {
   phoneNumber: string;
@@ -17,3 +18,9 @@ export type ICreateTeam = {
   teamStatus: ENUM_TEAM_STATUS;
 };
 export type ITeamStatus = "ongoing" | "closed";
+
+export type IAccept = {
+  members: number;
+  joinTeamId: mongoose.ObjectId;
+  status: ENUM_jOIN_TEAM_STATUS;
+};

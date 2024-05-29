@@ -9,7 +9,7 @@ const router = express.Router();
 export const JoinTeamRoutes = router;
 router.post(
   "/",
-  validateRequest(JoinTeamValidation.joinTeamSchema),
+  validateRequest(JoinTeamValidation.createJoinTeamSchema),
   JoinTeamController.createJoinTeam
 );
 router.get(

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
 const createTeamSchema = z.object({
   body: z.object({
@@ -48,7 +49,31 @@ const createTeamSchema = z.object({
     ),
   }),
 });
+const acceptTeamSchema = z.object({
+  body: z.object({
+    members: z.number({
+      required_error: "members is Required",
+    }),
+
+    joinTeamId: z.string({
+      required_error: "joinTeamId is Required",
+    }),
+    status: z
+      .string({
+        required_error: "status is Required",
+      })
+      .refine(
+        (value) => {
+          return (Object.values(ENUM_jOIN_TEAM_STATUS) as string[]).includes(
+            value
+          );
+        },
+        { message: "Invalid Status" }
+      ),
+  }),
+});
 
 export const CreateTeamValidation = {
   createTeamSchema,
+  acceptTeamSchema,
 };
