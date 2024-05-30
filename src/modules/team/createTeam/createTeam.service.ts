@@ -32,50 +32,118 @@ const updateSingleTeam = async (id: string, payload: Partial<ICreateTeam>) => {
   return result;
 };
 const acceptTeam = async (id: string, payload: IAccept) => {
-  const result = await CreateTeam.findById(id);
+  const team = await CreateTeam.findById(id).populate("joinPeople");
+  if (!team) {
+    throw new ApiError(404, "Team not found.");
+  }
+  const joinPerson = team.joinPeople.find(
+    (person: any) =>
+      person.joinTeamId.toString() === payload.joinTeamId.toString()
+  );
+  console.log(joinPerson);
+  if (!joinPerson) {
+    throw new ApiError(404, "JoinTeam not found in the team.");
+  }
 
-  if (result && result?.neededMembers < payload.members) {
-    throw new ApiError(400, `Member Needed Only ${result.currentMembers}`);
-  } else if (payload.status === ENUM_jOIN_TEAM_STATUS.NOTACCEPTED) {
-    console.log("you are not accepted");
-    console.log(payload.status, payload.joinTeamId, "status check");
-    await JoinTeam.findByIdAndUpdate(
-      { _id: payload.joinTeamId },
-      { status: payload.status },
-      { new: true }
-    );
-    return await CreateTeam.findById(id);
-  } else if (
+  if (
+    team.neededMembers !== 0 &&
     payload.status === ENUM_jOIN_TEAM_STATUS.ACCEPTED &&
-    payload.members
+    team.neededMembers < payload.members
   ) {
-    const session = await mongoose.startSession();
-    session.startTransaction();
+    throw new ApiError(400, `Your Team Only Needed ${team.neededMembers}`);
+  } else if (
+    team.neededMembers === 0 &&
+    payload.status === ENUM_jOIN_TEAM_STATUS.ACCEPTED
+  ) {
+    throw new ApiError(400, `Your Team is Full`);
+  }
 
-    try {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    if (
+      (joinPerson.status === ENUM_jOIN_TEAM_STATUS.PENDING ||
+        joinPerson.status === ENUM_jOIN_TEAM_STATUS.NOTACCEPTED) &&
+      (payload.status === ENUM_jOIN_TEAM_STATUS.NOTACCEPTED ||
+        payload.status === ENUM_jOIN_TEAM_STATUS.PENDING)
+    ) {
+      console.log("loop 2");
       const result = await CreateTeam.findOneAndUpdate(
         { _id: id },
         {
-          $inc: {
-            currentMembers: payload.members,
-            neededMembers: -payload.members,
-          },
+          $set: { "joinPeople.$[element].status": payload.status },
         },
-        { new: true, session }
+        {
+          arrayFilters: [
+            {
+              "element.joinTeamId": new mongoose.Types.ObjectId(
+                payload.joinTeamId
+              ),
+            },
+          ],
+          new: true,
+          session,
+        }
       );
       await JoinTeam.findByIdAndUpdate(
-        { _id: payload.joinTeamId },
+        new mongoose.Types.ObjectId(payload.joinTeamId),
         { status: payload.status },
         { new: true }
       );
       await session.commitTransaction();
       session.endSession();
       return result;
-    } catch (error) {
-      await session.abortTransaction();
+    } else if (
+      ((joinPerson.status === ENUM_jOIN_TEAM_STATUS.NOTACCEPTED ||
+        joinPerson.status === ENUM_jOIN_TEAM_STATUS.PENDING) &&
+        payload.status === ENUM_jOIN_TEAM_STATUS.ACCEPTED) ||
+      ((payload.status === ENUM_jOIN_TEAM_STATUS.NOTACCEPTED ||
+        payload.status === ENUM_jOIN_TEAM_STATUS.PENDING) &&
+        joinPerson.status === ENUM_jOIN_TEAM_STATUS.ACCEPTED)
+    ) {
+      const result = await CreateTeam.findOneAndUpdate(
+        { _id: id },
+        {
+          $inc: {
+            currentMembers:
+              joinPerson.status === ENUM_jOIN_TEAM_STATUS.PENDING ||
+              joinPerson.status === ENUM_jOIN_TEAM_STATUS.NOTACCEPTED
+                ? payload.members
+                : -payload.members,
+            neededMembers:
+              joinPerson.status === ENUM_jOIN_TEAM_STATUS.PENDING ||
+              joinPerson.status === ENUM_jOIN_TEAM_STATUS.NOTACCEPTED
+                ? -payload.members
+                : +payload.members,
+          },
+          $set: { "joinPeople.$[element].status": payload.status },
+        },
+        {
+          arrayFilters: [
+            {
+              "element.joinTeamId": new mongoose.Types.ObjectId(
+                payload.joinTeamId
+              ),
+            },
+          ],
+          new: true,
+          session,
+        }
+      );
+      await JoinTeam.findByIdAndUpdate(
+        new mongoose.Types.ObjectId(payload.joinTeamId),
+        { status: payload.status },
+        { new: true }
+      );
+      await session.commitTransaction();
       session.endSession();
-      throw error;
+      return result;
     }
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
   }
 };
 export const CreateTeamService = {

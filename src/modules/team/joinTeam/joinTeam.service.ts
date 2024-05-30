@@ -3,6 +3,8 @@ import { IJoinTeam } from "./joinTeam.interface";
 import { JoinTeam } from "./joinTeam.model";
 import { CreateTeam } from "../createTeam/createTeam.model";
 import ApiError from "../../../error/handleApiError";
+import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";
+import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
 const createJoinTeam = async (payload: IJoinTeam) => {
   const session = await mongoose.startSession();
@@ -14,11 +16,18 @@ const createJoinTeam = async (payload: IJoinTeam) => {
     if (!team) {
       throw new ApiError(400, "Invalid team ID. Team not found.");
     }
+
     if (team.email === payload.email) {
-      console.log("i am in the matching email loop");
+      //console.log("i am in the matching email loop");
       throw new ApiError(
         400,
         "You are the  creator of this team.You cannot join at your own team"
+      );
+    }
+    if (team.neededMembers < payload.groupMember) {
+      throw new ApiError(
+        400,
+        `this team only need ${team.neededMembers} members`
       );
     }
 
@@ -26,11 +35,16 @@ const createJoinTeam = async (payload: IJoinTeam) => {
       session,
     });
 
-    console.log(joinTeam, joinTeam);
-
     await CreateTeam.findByIdAndUpdate(
       payload.teamInfo,
-      { $push: { joinPeople: joinTeam._id } },
+      {
+        $push: {
+          joinPeople: {
+            joinTeamId: joinTeam._id,
+            status: ENUM_jOIN_TEAM_STATUS.PENDING,
+          },
+        },
+      },
       { session }
     );
 

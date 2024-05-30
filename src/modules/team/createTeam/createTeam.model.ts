@@ -1,8 +1,21 @@
 import { Schema, model } from "mongoose";
 
-import { ICreateTeam } from "./createTeam.interface";
+import { IAccept, ICreateTeam } from "./createTeam.interface";
 import { TeamStatus } from "./createTeam.constant";
 import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";
+import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
+const joinPeopleSchema = new Schema<IAccept>({
+  joinTeamId: {
+    type: Schema.Types.ObjectId,
+    ref: "JoinTeam",
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: Object.values(ENUM_jOIN_TEAM_STATUS),
+    default: ENUM_jOIN_TEAM_STATUS.PENDING,
+  },
+});
 
 const creaTeTeamSchema = new Schema<ICreateTeam>(
   {
@@ -53,12 +66,7 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
       type: Date,
       required: true,
     },
-    joinPeople: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "JoinTeam",
-      },
-    ],
+    joinPeople: [joinPeopleSchema],
   },
   {
     timestamps: true,

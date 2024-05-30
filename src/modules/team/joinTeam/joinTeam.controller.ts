@@ -16,7 +16,7 @@ const createJoinTeam = catchAsync(async (req: Request, res: Response) => {
     success: true,
     statusCode: httpStatus.OK,
 
-    message: "Join Team Created   successfully",
+    message: "Join Team Request send    successfully",
     data: result,
   });
 });

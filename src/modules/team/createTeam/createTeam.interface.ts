@@ -14,13 +14,19 @@ export type ICreateTeam = {
   nationalIdNumber: string;
   startDate: Date;
   endDate: Date;
-  joinPeople: Types.ObjectId[];
+  joinPeople: IJoinPerson[];
   teamStatus: ENUM_TEAM_STATUS;
 };
 export type ITeamStatus = "ongoing" | "closed";
 
 export type IAccept = {
   members: number;
-  joinTeamId: mongoose.ObjectId;
+  joinTeamId: mongoose.Types.ObjectId;
+  status: ENUM_jOIN_TEAM_STATUS;
+};
+
+export type IJoinPerson = {
+  _id: mongoose.Types.ObjectId;
+  joinTeamId: mongoose.Types.ObjectId;
   status: ENUM_jOIN_TEAM_STATUS;
 };

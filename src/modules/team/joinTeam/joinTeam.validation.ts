@@ -31,18 +31,6 @@ const createJoinTeamSchema = z.object({
     teamInfo: z.string({
       required_error: "teamInfo is Required",
     }),
-    status: z
-      .string({
-        required_error: "Status is Required",
-      })
-      .refine(
-        (value) => {
-          return (Object.values(ENUM_jOIN_TEAM_STATUS) as string[]).includes(
-            value
-          );
-        },
-        { message: "Invalid role" }
-      ),
   }),
 });
 
