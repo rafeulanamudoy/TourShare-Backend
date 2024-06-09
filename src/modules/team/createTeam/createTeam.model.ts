@@ -1,21 +1,9 @@
 import { Schema, model } from "mongoose";
 
-import { IAccept, ICreateTeam } from "./createTeam.interface";
-import { TeamStatus } from "./createTeam.constant";
+import { ICreateTeam } from "./createTeam.interface";
+import { JoinTeamStatus, TeamStatus } from "./createTeam.constant";
 import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";
 import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
-const joinPeopleSchema = new Schema<IAccept>({
-  joinTeamId: {
-    type: Schema.Types.ObjectId,
-    ref: "JoinTeam",
-    required: true,
-  },
-  status: {
-    type: String,
-    enum: Object.values(ENUM_jOIN_TEAM_STATUS),
-    default: ENUM_jOIN_TEAM_STATUS.PENDING,
-  },
-});
 
 const creaTeTeamSchema = new Schema<ICreateTeam>(
   {
@@ -31,6 +19,10 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
       required: true,
       index: true,
       unique: true,
+    },
+    teamName: {
+      type: String,
+      required: true,
     },
     address: {
       type: String,
@@ -66,7 +58,64 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
       type: Date,
       required: true,
     },
-    joinPeople: [joinPeopleSchema],
+    budget: {
+      type: Number,
+      requered: true,
+    },
+    teamDetails: {
+      description: {
+        type: String,
+        default: "",
+      },
+      meetingPoint: {
+        type: String,
+        default: "",
+      },
+      meetingTime: {
+        type: Date,
+        default: Date.now,
+      },
+      tripDuration: {
+        type: String,
+        default: "",
+      },
+      accommodations: {
+        type: String,
+        default: "",
+      },
+      transportation: {
+        type: String,
+        default: "",
+      },
+      activities: [
+        {
+          type: String,
+          default: "",
+        },
+      ],
+      costBreakdown: {
+        type: String,
+        default: "",
+      },
+      requirements: {
+        type: String,
+        default: "",
+      },
+    },
+    joinPeople: [
+      {
+        joinTeamId: {
+          type: Schema.Types.ObjectId,
+          ref: "JoinTeam",
+          required: true,
+        },
+        status: {
+          type: String,
+          enum: JoinTeamStatus,
+          default: ENUM_jOIN_TEAM_STATUS.PENDING,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

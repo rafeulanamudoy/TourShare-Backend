@@ -6,6 +6,7 @@ import { SuperAdminRoutes } from "../modules/users/superAdmin/superAdmin.route";
 import { UserRoutes } from "../modules/users/shared/users.route";
 import { CreateTeamRoutes } from "../modules/team/createTeam/createTeam.route";
 import { JoinTeamRoutes } from "../modules/team/joinTeam/joinTeam.route";
+import { MessageRoutes } from "../modules/messages/messages.route";
 
 const router = express.Router();
 
@@ -34,6 +35,10 @@ const moduleRoutes = [
   {
     path: "/joinTeam",
     route: JoinTeamRoutes,
+  },
+  {
+    path: "/messages",
+    route: MessageRoutes,
   },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

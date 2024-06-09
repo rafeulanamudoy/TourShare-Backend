@@ -16,9 +16,10 @@ const getTeams = async () => {
 };
 
 const getSingleTeamByEmail = async (email: string) => {
-  const result = await CreateTeam.findOne({ email: email }).populate(
-    "joinPeople"
-  );
+  const result = await CreateTeam.findOne({ email: email }).populate({
+    path: "joinPeople.joinTeamId",
+    model: "JoinTeam",
+  });
   return result;
 };
 const getSingleTeamById = async (id: string) => {

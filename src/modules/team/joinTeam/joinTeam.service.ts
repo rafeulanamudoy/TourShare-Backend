@@ -1,9 +1,9 @@
-import mongoose, { Document, isValidObjectId } from "mongoose";
+import mongoose from "mongoose";
 import { IJoinTeam } from "./joinTeam.interface";
 import { JoinTeam } from "./joinTeam.model";
 import { CreateTeam } from "../createTeam/createTeam.model";
 import ApiError from "../../../error/handleApiError";
-import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";
+
 import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
 const createJoinTeam = async (payload: IJoinTeam) => {
@@ -63,7 +63,7 @@ const getJointTeams = async () => {
 };
 
 const getSingleJoinTeam = async (email: string) => {
-  const result = await JoinTeam.findOne({ email: email });
+  const result = await JoinTeam.findOne({ email: email }).populate("teamInfo");
   return result;
 };
 const updateSingleJoinTeam = async (
@@ -90,7 +90,7 @@ const deleteSingleJoinTeam = async (id: string) => {
     }
     await CreateTeam.findByIdAndUpdate(
       deleteTeam.teamInfo,
-      { $pull: { joinPeople: deleteTeam._id } },
+      { $pull: { joinPeople: { joinTeamId: deleteTeam._id } } },
       { session }
     );
     await session.commitTransaction();

@@ -21,6 +21,9 @@ const createTeamSchema = z.object({
     address: z.string({
       required_error: "Address is Required",
     }),
+    teamName: z.string({
+      required_error: "teamName is Required",
+    }),
     destination: z.string({
       required_error: "Destination is Required",
     }),
@@ -32,6 +35,9 @@ const createTeamSchema = z.object({
     }),
     nationalIdNumber: z.string({
       required_error: "National ID number is Required",
+    }),
+    budget: z.number({
+      required_error: "budget are requered are Required",
     }),
     startDate: z.preprocess(
       (arg) =>
