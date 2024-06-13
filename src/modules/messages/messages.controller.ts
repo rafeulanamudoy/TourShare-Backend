@@ -7,7 +7,7 @@ import { Request, Response } from "express";
 
 const createMessage = catchAsync(async (req: Request, res: Response) => {
   const createMessage = req.body;
-  console.log(req.body, "create message");
+  // console.log(req.body, "create message");
 
   const result = await MessageService.createMessage(createMessage);
 

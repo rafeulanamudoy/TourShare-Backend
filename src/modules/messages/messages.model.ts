@@ -25,32 +25,3 @@ const messageSchema = new Schema<IMessage>(
 );
 
 export const Message = model("Message", messageSchema);
-// ({
-//   sender: {
-//     type: Schema.Types.ObjectId,
-//     required: true,
-//     refPath: "senderModel",
-//   },
-//   senderModel: {
-//     type: String,
-//     required: true,
-//     enum: MessageModel,
-//   },
-//   recipient: {
-//     type: Schema.Types.ObjectId,
-//     required: true,
-//     refPath: "recipientModel",
-//   },
-//   recipientModel: {
-//     type: String,
-//     required: true,
-//     enum: MessageModel,
-//   },
-//   message: {
-//     type: String,
-//     required: true,
-//   },
-// }),
-//   {
-//     timestamps: true,
-//   };

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
 const createJoinTeamSchema = z.object({
   body: z.object({

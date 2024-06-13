@@ -17,6 +17,8 @@ const io = new Server(httpServer, {
     origin: "http://localhost:3000",
   },
   transports: ["polling", "websocket"],
+  pingInterval: 25000, // Send a ping every 25 seconds
+  pingTimeout: 60000, // Consider the connection closed if no pong is received within 60 seconds
 });
 
 const users: { [key: string]: string } = {};
@@ -29,35 +31,39 @@ io.on("connection", (socket) => {
     //console.log(`User ${email} registered with socket ID ${socket.id}`);
   });
 
-  socket.on("privateMessage", async ({ toEmail, message }) => {
+  socket.on("privateMessage", async ({ toEmail, message, timestamp }) => {
     const toSocketId = users[toEmail];
     const senderId = Object.keys(users).find((key) => users[key] === socket.id);
-    //console.log(socket.id, "user id");
-    // console.log(toSocketId, "recipinet id");
-    //console.log(toEmail, message, "message history");
+    console.log(socket.id, "user id");
+    console.log(toSocketId, "recipinet id");
+    console.log(toEmail, message, "message history");
     if (senderId) {
       socket.to(toSocketId).emit("privateMessage", {
         from: senderId, // Find the email of the sender
         message,
+        timestamp,
       });
-      console.log(senderId, message, "check user message");
-
-      try {
-        await MessageService.createMessage({
-          sender: senderId,
-          recipient: toEmail,
-          message,
-        });
-      } catch (error: any) {
-        throw new ApiError(400, error.message);
-      }
+      //console.log(senderId, message, "check user message");
+      socket.to(toSocketId).emit("messageNotification", {
+        from: senderId,
+        message,
+      });
+      // try {
+      //   await MessageService.createMessage({
+      //     sender: senderId,
+      //     recipient: toEmail,
+      //     message,
+      //   });
+      // } catch (error: any) {
+      //   throw new ApiError(400, error.message);
+      // }
     } else {
       socket.emit("userNotFound", `User ${toEmail} is not connected`);
     }
   });
 
   socket.on("disconnect", (reason) => {
-    //console.log(`A user disconnected for ${reason}`, socket.id);
+    console.log(`A user disconnected for ${reason}`, socket.id);
 
     for (const email in users) {
       if (users[email] === socket.id) {

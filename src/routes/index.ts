@@ -7,6 +7,7 @@ import { UserRoutes } from "../modules/users/shared/users.route";
 import { CreateTeamRoutes } from "../modules/team/createTeam/createTeam.route";
 import { JoinTeamRoutes } from "../modules/team/joinTeam/joinTeam.route";
 import { MessageRoutes } from "../modules/messages/messages.route";
+import { NotificationRoutes } from "../modules/notification/notification.route";
 
 const router = express.Router();
 
@@ -39,6 +40,10 @@ const moduleRoutes = [
   {
     path: "/messages",
     route: MessageRoutes,
+  },
+  {
+    path: "/notification",
+    route: NotificationRoutes,
   },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

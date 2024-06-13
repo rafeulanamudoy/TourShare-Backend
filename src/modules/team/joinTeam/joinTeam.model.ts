@@ -4,7 +4,7 @@ import { IJoinTeam } from "./joinTeam.interface";
 import { JoinTeamStatus } from "./joinTeam.const";
 import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
-const creaTeTeamSchema = new Schema<IJoinTeam>(
+const JointeamSchema = new Schema<IJoinTeam>(
   {
     email: {
       type: String,
@@ -46,4 +46,4 @@ const creaTeTeamSchema = new Schema<IJoinTeam>(
   }
 );
 
-export const JoinTeam = model<IJoinTeam>("JoinTeam", creaTeTeamSchema);
+export const JoinTeam = model<IJoinTeam>("JoinTeam", JointeamSchema);
