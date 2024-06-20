@@ -8,18 +8,38 @@ const createNotification = async (payload: INotification) => {
 };
 
 const getUserNotification = async (
-  sender: string,
+  recipient: string,
   status: string,
   type: string
 ) => {
-  const result = await Notification.find({
-    recipient: sender,
-    status: status,
-    type: type,
-  });
+  let filters: any = {};
+
+  if (status && recipient && type) {
+    filters.recipient = recipient;
+    filters.status = status;
+    filters.type = type;
+  } else if (recipient && type) {
+    filters.recipient = recipient;
+
+    filters.type = type;
+  } else if (recipient) {
+    filters.recipient = recipient;
+  }
+  const result = await Notification.find(filters);
+  return result;
+};
+const updateNotification = async (id: string) => {
+  const result = await Notification.findOneAndUpdate(
+    { _id: id },
+    { status: ENUM_NOTIFICATION_STATUS.SEEN },
+    {
+      new: true,
+    }
+  );
   return result;
 };
 export const NotificationService = {
   createNotification,
   getUserNotification,
+  updateNotification,
 };

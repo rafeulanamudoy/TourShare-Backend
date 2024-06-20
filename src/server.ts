@@ -1,11 +1,8 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import app from "./app";
 import config from "./config";
 import { Server } from "socket.io";
 import { createServer } from "http";
-import { Message } from "./modules/messages/messages.model";
-import { MessageService } from "./modules/messages/messages.service";
-import ApiError from "./error/handleApiError";
 
 const options = {
   autoIndex: true,
@@ -17,54 +14,45 @@ const io = new Server(httpServer, {
     origin: "http://localhost:3000",
   },
   transports: ["polling", "websocket"],
-  pingInterval: 25000, // Send a ping every 25 seconds
-  pingTimeout: 60000, // Consider the connection closed if no pong is received within 60 seconds
+  pingInterval: 25000, // Increased ping interval
+  pingTimeout: 60000, // Increased ping timeout
+  upgradeTimeout: 30000, // Increased upgrade timeout
 });
 
 const users: { [key: string]: string } = {};
 
 io.on("connection", (socket) => {
-  // console.log(`${socket.id} user just connected`);
+  console.log(`User connected: ${socket.id}`);
 
   socket.on("register", (email: string) => {
     users[email] = socket.id;
-    //console.log(`User ${email} registered with socket ID ${socket.id}`);
+    console.log(`User ${email} registered with socket ID ${socket.id}`);
   });
 
-  socket.on("privateMessage", async ({ toEmail, message, timestamp }) => {
+  socket.on("privateMessage", ({ toEmail, message, timestamp }) => {
     const toSocketId = users[toEmail];
     const senderId = Object.keys(users).find((key) => users[key] === socket.id);
-    console.log(socket.id, "user id");
-    console.log(toSocketId, "recipinet id");
-    console.log(toEmail, message, "message history");
-    if (senderId) {
+    if (toSocketId && senderId) {
       socket.to(toSocketId).emit("privateMessage", {
-        from: senderId, // Find the email of the sender
+        from: senderId,
         message,
         timestamp,
       });
-      //console.log(senderId, message, "check user message");
       socket.to(toSocketId).emit("messageNotification", {
         from: senderId,
         message,
       });
-      // try {
-      //   await MessageService.createMessage({
-      //     sender: senderId,
-      //     recipient: toEmail,
-      //     message,
-      //   });
-      // } catch (error: any) {
-      //   throw new ApiError(400, error.message);
-      // }
     } else {
       socket.emit("userNotFound", `User ${toEmail} is not connected`);
     }
   });
 
   socket.on("disconnect", (reason) => {
-    console.log(`A user disconnected for ${reason}`, socket.id);
-
+    console.log(
+      `A user disconnected for ${reason} - Socket ID: ${
+        socket.id
+      } - Time: ${new Date().toISOString()}`
+    );
     for (const email in users) {
       if (users[email] === socket.id) {
         delete users[email];
@@ -74,20 +62,21 @@ io.on("connection", (socket) => {
   });
 
   socket.on("error", (error) => {
-    //  console.error(`Error from socket ${socket.id}: ${error}`);
+    console.error(`Error from socket ${socket.id}: ${error}`);
   });
 });
 
 async function boostrap() {
   try {
     await mongoose.connect(config.database_url as string, options);
-    console.log(`database connect successfully`);
+    console.log("Database connected successfully");
 
     httpServer.listen(config.port, () => {
-      console.log(`app listening on port ${config.port}`);
+      console.log(`App listening on port ${config.port}`);
     });
   } catch (error) {
-    console.log(`fail to connect the error is:${error}`);
+    console.log(`Failed to connect: ${error}`);
   }
 }
+
 boostrap();

@@ -13,3 +13,5 @@ router.post(
 );
 
 router.get("/", NotificationController.getUserNotification);
+
+router.patch("/:id", NotificationController.updateNotification);

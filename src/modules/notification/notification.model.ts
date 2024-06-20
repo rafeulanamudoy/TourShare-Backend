@@ -8,6 +8,7 @@ const NotificationSchema = new Schema<INotification>(
     recipient: {
       type: String,
       required: true,
+      index: true,
     },
 
     sender: {
@@ -22,11 +23,13 @@ const NotificationSchema = new Schema<INotification>(
       type: String,
       required: true,
       enum: NotificationType,
+      index: true,
     },
     status: {
       type: String,
       enum: NotificationStatus,
       default: ENUM_NOTIFICATION_STATUS.UNSEEN,
+      index: true,
     },
   },
   {
