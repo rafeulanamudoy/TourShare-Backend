@@ -10,5 +10,25 @@ export type INotification = {
   type: ENUM_NOTIFICATION_TYPE;
   status: ENUM_NOTIFICATION_STATUS;
 };
-export type INotificationType = "privateMessage" | "joinTeam" | "createTeam";
+export type INotificationType =
+  | "privateMessage"
+  | "joinTeamStatusUpdate"
+  | "joinTeamRequestStatus";
 export type INotificationStatus = "seen" | "unseen";
+
+export type NotificationCreateResponse = {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    recipient: string;
+    sender: string;
+    message: string;
+    type: string;
+    status: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+};

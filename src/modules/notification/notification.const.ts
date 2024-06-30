@@ -5,8 +5,8 @@ import {
 
 export const NotificationType: INotificationType[] = [
   "privateMessage",
-  "joinTeam",
-  "createTeam",
+  "joinTeamStatusUpdate",
+  "joinTeamRequestStatus",
 ];
 
 export const NotificationStatus: INotificationStatus[] = ["seen", "unseen"];

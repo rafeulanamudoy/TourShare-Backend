@@ -8,7 +8,6 @@ import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
 const createJoinTeam = async (payload: IJoinTeam) => {
   const session = await mongoose.startSession();
-
   session.startTransaction();
   try {
     const team = await CreateTeam.findById({ _id: payload.teamInfo });
@@ -18,22 +17,20 @@ const createJoinTeam = async (payload: IJoinTeam) => {
     }
 
     if (team.email === payload.email) {
-      //console.log("i am in the matching email loop");
       throw new ApiError(
         400,
-        "You are the  creator of this team.You cannot join at your own team"
-      );
-    }
-    if (team.neededMembers < payload.groupMember) {
-      throw new ApiError(
-        400,
-        `this team only need ${team.neededMembers} members`
+        "You are the creator of this team. You cannot join your own team."
       );
     }
 
-    const [joinTeam] = await JoinTeam.create([payload], {
-      session,
-    });
+    if (team.neededMembers < payload.groupMember) {
+      throw new ApiError(
+        400,
+        `This team only needs ${team.neededMembers} members.`
+      );
+    }
+
+    const [joinTeam] = await JoinTeam.create([payload], { session });
 
     await CreateTeam.findByIdAndUpdate(
       payload.teamInfo,
@@ -50,13 +47,18 @@ const createJoinTeam = async (payload: IJoinTeam) => {
 
     await session.commitTransaction();
     session.endSession();
-    return joinTeam;
+
+    const populatedJoinTeam = await JoinTeam.findById(joinTeam._id).populate(
+      "teamInfo"
+    );
+    return populatedJoinTeam;
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
     throw error;
   }
 };
+
 const getJointTeams = async () => {
   const result = await JoinTeam.find({});
   return result;

@@ -18,6 +18,9 @@ const getUserNotification = async (
     filters.recipient = recipient;
     filters.status = status;
     filters.type = type;
+  } else if (status && recipient) {
+    filters.recipient = recipient;
+    filters.status = status;
   } else if (recipient && type) {
     filters.recipient = recipient;
 
@@ -25,7 +28,8 @@ const getUserNotification = async (
   } else if (recipient) {
     filters.recipient = recipient;
   }
-  const result = await Notification.find(filters);
+
+  const result = await Notification.find(filters).sort({ createdAt: -1 });
   return result;
 };
 const updateNotification = async (id: string) => {
