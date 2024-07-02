@@ -1,7 +1,11 @@
 import { Schema, model } from "mongoose";
 
 import { ICreateTeam } from "./createTeam.interface";
-import { JoinTeamStatus, TeamStatus } from "./createTeam.constant";
+import {
+  JoinTeamStatus,
+  TeamStatus,
+  transportation,
+} from "./createTeam.constant";
 import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";
 import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 
@@ -71,36 +75,43 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
         type: String,
         default: "",
       },
-      meetingTime: {
+      meetingDate: {
         type: Date,
-        default: Date.now,
+        required: true,
       },
-      tripDuration: {
+      meetingTime: {
         type: String,
-        default: "",
+        required: true,
       },
+
       accommodations: {
         type: String,
         default: "",
       },
       transportation: {
         type: String,
-        default: "",
+        enum: transportation,
       },
       activities: [
         {
-          type: String,
-          default: "",
+          activity: {
+            type: String,
+            default: "",
+          },
         },
       ],
       costBreakdown: {
         type: String,
         default: "",
       },
-      requirements: {
-        type: String,
-        default: "",
-      },
+      responsibilities: [
+        {
+          responsibility: {
+            type: String,
+            default: "",
+          },
+        },
+      ],
     },
     joinPeople: [
       {

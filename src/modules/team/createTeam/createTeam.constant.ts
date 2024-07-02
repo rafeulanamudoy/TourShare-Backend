@@ -1,5 +1,5 @@
 import { IJoinTeamStatus } from "../joinTeam/joinTeam.interface";
-import { ITeamStatus } from "./createTeam.interface";
+import { ITeamStatus, ITransportation } from "./createTeam.interface";
 
 export const TeamStatus: ITeamStatus[] = ["ongoing", "closed"];
 export const JoinTeamStatus: IJoinTeamStatus[] = [
@@ -7,3 +7,4 @@ export const JoinTeamStatus: IJoinTeamStatus[] = [
   "notAccepted",
   "pending",
 ];
+export const transportation: ITransportation[] = ["airplane", "bus", "train"];

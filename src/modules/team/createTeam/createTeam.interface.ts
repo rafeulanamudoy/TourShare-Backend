@@ -4,13 +4,14 @@ import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 export type ITeamDetails = {
   description: string;
   meetingPoint: string;
-  meetingTime: Date;
-  tripDuration: string;
+  meetingDate: Date;
+  meetingTime: string;
+
   accommodations: string;
   transportation: string;
-  activities: string[];
-  costBreakdown?: string; // optional field
-  requirements?: string; // optional field
+  activities?: { activity: string }[];
+  costBreakdown: string;
+  responsibilities?: { responsibility: string }[];
 };
 export type ICreateTeam = {
   phoneNumber: string;
@@ -28,7 +29,7 @@ export type ICreateTeam = {
   teamStatus: ENUM_TEAM_STATUS;
   budget: number;
   teamName: string;
-  teamDetails?: ITeamDetails;
+  teamDetails: ITeamDetails;
 };
 export type ITeamStatus = "ongoing" | "closed";
 
@@ -43,3 +44,4 @@ export type IJoinPerson = {
   joinTeamId: mongoose.Types.ObjectId;
   status: ENUM_jOIN_TEAM_STATUS;
 };
+export type ITransportation = "bus" | "airplane" | "train";
