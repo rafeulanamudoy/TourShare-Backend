@@ -13,7 +13,8 @@ export type INotification = {
 export type INotificationType =
   | "privateMessage"
   | "joinTeamStatusUpdate"
-  | "joinTeamRequestStatus";
+  | "joinTeamRequestStatus"
+  | "updateCreateTeam";
 export type INotificationStatus = "seen" | "unseen";
 
 export type NotificationCreateResponse = {

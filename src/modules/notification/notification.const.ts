@@ -7,6 +7,7 @@ export const NotificationType: INotificationType[] = [
   "privateMessage",
   "joinTeamStatusUpdate",
   "joinTeamRequestStatus",
+  "updateCreateTeam",
 ];
 
 export const NotificationStatus: INotificationStatus[] = ["seen", "unseen"];
