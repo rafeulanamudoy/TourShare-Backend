@@ -31,3 +31,4 @@ router.patch(
   validateRequest(CreateTeamValidation.acceptTeamSchema),
   CreateTeamController.acceptTeam
 );
+router.delete("/:id", CreateTeamController.deleteSingleTeam);

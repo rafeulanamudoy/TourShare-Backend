@@ -147,6 +147,35 @@ const acceptTeam = async (id: string, payload: IAccept) => {
     throw error;
   }
 };
+const deleteSingleTeam = async (id: string) => {
+  const session = await mongoose.startSession();
+
+  session.startTransaction();
+  try {
+    const deleteTeam = await CreateTeam.findOneAndDelete(
+      { _id: id },
+      { session }
+    );
+
+    if (!deleteTeam) {
+      throw new ApiError(404, "Team not found.");
+    }
+
+    // Deleting associated JoinTeam documents
+    const joinPeople = deleteTeam.joinPeople;
+    for (const joinPerson of joinPeople) {
+      await JoinTeam.findByIdAndDelete(joinPerson.joinTeamId, { session });
+    }
+
+    await session.commitTransaction();
+    session.endSession();
+    return deleteTeam;
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
+};
 export const CreateTeamService = {
   createTeam,
   getTeams,
@@ -154,4 +183,5 @@ export const CreateTeamService = {
   getSingleTeamById,
   updateSingleTeam,
   acceptTeam,
+  deleteSingleTeam,
 };

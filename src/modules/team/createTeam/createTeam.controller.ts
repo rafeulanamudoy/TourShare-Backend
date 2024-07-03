@@ -82,6 +82,21 @@ const acceptTeam = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const deleteSingleTeam = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  console.log(id, "id");
+
+  const result = await CreateTeamService.deleteSingleTeam(id);
+  console.log(result);
+
+  sendResponse<ICreateTeam>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "Create  team  deleted  successfully",
+    data: result,
+  });
+});
 export const CreateTeamController = {
   createTeam,
   getTeams,
@@ -89,4 +104,5 @@ export const CreateTeamController = {
   updateSingleTeam,
   getSingleTeamById,
   acceptTeam,
+  deleteSingleTeam,
 };
