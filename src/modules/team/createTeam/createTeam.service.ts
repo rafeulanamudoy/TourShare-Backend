@@ -155,7 +155,10 @@ const deleteSingleTeam = async (id: string) => {
     const deleteTeam = await CreateTeam.findOneAndDelete(
       { _id: id },
       { session }
-    );
+    ).populate({
+      path: "joinPeople.joinTeamId",
+      model: "JoinTeam",
+    });
 
     if (!deleteTeam) {
       throw new ApiError(404, "Team not found.");

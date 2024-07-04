@@ -8,6 +8,7 @@ export const NotificationType: INotificationType[] = [
   "joinTeamStatusUpdate",
   "joinTeamRequestStatus",
   "updateCreateTeam",
+  "deleteCreateTeam",
 ];
 
 export const NotificationStatus: INotificationStatus[] = ["seen", "unseen"];
