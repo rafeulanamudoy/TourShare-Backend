@@ -5,18 +5,6 @@ const mongoose_1 = require("mongoose");
 const createTeam_constant_1 = require("./createTeam.constant");
 const teamStatus_1 = require("../../../enums/teamStatus");
 const joinTeamStatus_1 = require("../../../enums/joinTeamStatus");
-// const joinPeopleSchema = new Schema<IAccept>({
-//   joinTeamId: {
-//     type: Schema.Types.ObjectId,
-//     ref: "JoinTeam",
-//     required: true,
-//   },
-//   status: {
-//     type: String,
-//     enum: Object.values(ENUM_jOIN_TEAM_STATUS),
-//     default: ENUM_jOIN_TEAM_STATUS.PENDING,
-//   },
-// });
 const creaTeTeamSchema = new mongoose_1.Schema({
     email: {
         type: String,
@@ -29,6 +17,10 @@ const creaTeTeamSchema = new mongoose_1.Schema({
         required: true,
         index: true,
         unique: true,
+    },
+    teamName: {
+        type: String,
+        required: true,
     },
     address: {
         type: String,
@@ -63,6 +55,56 @@ const creaTeTeamSchema = new mongoose_1.Schema({
         type: Date,
         required: true,
     },
+    budget: {
+        type: Number,
+        requered: true,
+    },
+    teamDetails: {
+        description: {
+            type: String,
+            default: "",
+        },
+        depurture: {
+            type: String,
+            default: "",
+        },
+        depurtureTime: {
+            type: String,
+            required: true,
+        },
+        returnTime: {
+            type: String,
+            required: true,
+        },
+        accommodations: {
+            type: String,
+            default: "",
+        },
+        transportation: {
+            type: String,
+            enum: createTeam_constant_1.transportation,
+        },
+        activities: [
+            {
+                activity: {
+                    type: String,
+                    default: "",
+                },
+            },
+        ],
+        costBreakDown: {
+            type: String,
+            required: true,
+        },
+        responsibilities: [
+            {
+                responsibility: {
+                    type: String,
+                    default: "",
+                },
+            },
+        ],
+    },
     joinPeople: [
         {
             joinTeamId: {
@@ -72,7 +114,7 @@ const creaTeTeamSchema = new mongoose_1.Schema({
             },
             status: {
                 type: String,
-                enum: Object.values(joinTeamStatus_1.ENUM_jOIN_TEAM_STATUS),
+                enum: createTeam_constant_1.JoinTeamStatus,
                 default: joinTeamStatus_1.ENUM_jOIN_TEAM_STATUS.PENDING,
             },
         },

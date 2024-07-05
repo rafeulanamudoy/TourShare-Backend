@@ -7,7 +7,6 @@ import httpStatus from "http-status";
 
 const createTeam = catchAsync(async (req: Request, res: Response) => {
   const createTeam = req.body;
-  console.log(req.body, "create team");
 
   const result = await CreateTeamService.createTeam(createTeam);
 
@@ -84,10 +83,8 @@ const acceptTeam = catchAsync(async (req: Request, res: Response) => {
 });
 const deleteSingleTeam = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
-  console.log(id, "id");
 
   const result = await CreateTeamService.deleteSingleTeam(id);
-  console.log(result);
 
   sendResponse<ICreateTeam>(res, {
     success: true,

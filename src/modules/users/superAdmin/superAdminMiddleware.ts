@@ -8,7 +8,6 @@ const superAdminCredential =
   () => async (req: Request, res: Response, next: NextFunction) => {
     try {
       const credential = req.body;
-      console.log(credential, "from superAdminMiddleware");
 
       if (!credential || !credential.role || !credential.secret_key) {
         throw new ApiError(

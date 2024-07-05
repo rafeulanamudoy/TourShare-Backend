@@ -8,7 +8,6 @@ import { IJoinTeam } from "./joinTeam.interface";
 
 const createJoinTeam = catchAsync(async (req: Request, res: Response) => {
   const createTeam = req.body;
-  console.log(req.body, "create team");
 
   const result = await JoinTeamService.createJoinTeam(createTeam);
 
@@ -59,10 +58,8 @@ const updateSingleJoinTeam = catchAsync(async (req: Request, res: Response) => {
 });
 const deleteSingleJoinTeam = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
-  console.log(id, "id");
 
   const result = await JoinTeamService.deleteSingleJoinTeam(id);
-  console.log(result);
 
   sendResponse<IJoinTeam>(res, {
     success: true,

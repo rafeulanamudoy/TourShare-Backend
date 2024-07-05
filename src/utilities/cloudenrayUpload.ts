@@ -25,7 +25,7 @@ export const setUserfunction = async (req: Request) => {
 
 export const updateUserFunction = async (req: Request, id: string) => {
   let profileImage = { url: "", public_id: "" };
-  // console.log(req.file, "check request file");
+
   console.log(req.body);
 
   if (req.file) {
@@ -41,12 +41,6 @@ export const updateUserFunction = async (req: Request, id: string) => {
         uploadPromise,
       ]);
 
-      // console.log(
-      //   deleteResponse,
-      //   cloudinaryResponse,
-      //   "to ccheck response in promise.all"
-      // );
-      // Construct the profileImage object with the new URL and public_id
       profileImage = {
         url: cloudinaryResponse.url,
         public_id: cloudinaryResponse.public_id,

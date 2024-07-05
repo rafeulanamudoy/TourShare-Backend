@@ -16,3 +16,4 @@ router.get("/email/:email", createTeam_controller_1.CreateTeamController.getSing
 router.get("/id/:id", createTeam_controller_1.CreateTeamController.getSingleTeamById);
 router.patch("/:id", createTeam_controller_1.CreateTeamController.updateSingleTeam);
 router.patch("/accept/:id", (0, validateRequest_1.default)(createTeam_validation_1.CreateTeamValidation.acceptTeamSchema), createTeam_controller_1.CreateTeamController.acceptTeam);
+router.delete("/:id", createTeam_controller_1.CreateTeamController.deleteSingleTeam);

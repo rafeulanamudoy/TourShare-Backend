@@ -27,11 +27,8 @@ const io = new Server(httpServer, {
 const users: { [key: string]: string } = {};
 
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
-
   socket.on("register", (email: string) => {
     users[email] = socket.id;
-    console.log(`User ${email} registered with socket ID ${socket.id}`);
   });
 
   socket.on("privateMessage", async ({ toEmail, message, timestamp }) => {
@@ -41,13 +38,9 @@ io.on("connection", (socket) => {
     );
 
     if (!senderEmail) {
-      console.log(`Sender email not found for socket ID: ${socket.id}`);
       return;
     }
 
-    console.log(
-      `${toSocketId} send message to ${toEmail}: ${message} from ${senderEmail}`
-    );
     try {
       // Save the message to the database regardless of recipient's connection status
       const savedMessage = await Message.create({
@@ -63,9 +56,7 @@ io.on("connection", (socket) => {
           timestamp,
         });
       }
-    } catch (error) {
-      console.log(error, "message created error");
-    }
+    } catch (error) {}
   });
 
   socket.on(
@@ -77,7 +68,6 @@ io.on("connection", (socket) => {
       );
 
       if (!senderEmail) {
-        console.log(`Sender email not found for socket ID: ${socket.id}`);
         return;
       }
 
@@ -110,7 +100,6 @@ io.on("connection", (socket) => {
           });
         }
       } catch (error) {
-        console.error("Failed to create notification:", error);
         socket.emit("notificationError", "Failed to create notification");
       }
     }
@@ -120,16 +109,10 @@ io.on("connection", (socket) => {
     const senderEmail = Object.keys(users).find(
       (key) => users[key] === socket.id
     );
-    console.log();
 
     if (!senderEmail) {
-      console.log(`Sender email not found for socket ID: ${socket.id}`);
       return;
     }
-
-    console.log(
-      `${toSocketId} send message to ${toEmail}: ${message} from ${senderEmail}`
-    );
 
     try {
       const notification = await Notification.create({
@@ -160,7 +143,6 @@ io.on("connection", (socket) => {
         });
       }
     } catch (error) {
-      console.error("Failed to create notification:", error);
       socket.emit("notificationError", "Failed to create notification");
     }
   });
@@ -171,16 +153,10 @@ io.on("connection", (socket) => {
       const senderEmail = Object.keys(users).find(
         (key) => users[key] === socket.id
       );
-      console.log();
 
       if (!senderEmail) {
-        console.log(`Sender email not found for socket ID: ${socket.id}`);
         return;
       }
-
-      console.log(
-        `${toSocketId} send message to ${toEmail}: ${message} from ${senderEmail}`
-      );
 
       try {
         const notification = await Notification.create({
@@ -211,7 +187,6 @@ io.on("connection", (socket) => {
           });
         }
       } catch (error) {
-        console.error("Failed to create notification:", error);
         socket.emit("notificationError", "Failed to create notification");
       }
     }
@@ -223,10 +198,8 @@ io.on("connection", (socket) => {
       const senderEmail = Object.keys(users).find(
         (key) => users[key] === socket.id
       );
-      console.log();
 
       if (!senderEmail) {
-        console.log(`Sender email not found for socket ID: ${socket.id}`);
         return;
       }
 
@@ -267,7 +240,6 @@ io.on("connection", (socket) => {
 
         await Promise.all(notifications);
       } catch (error) {
-        console.error("Failed to create notification:", error);
         socket.emit("notificationError", "Failed to create notification");
       }
     }
@@ -279,10 +251,8 @@ io.on("connection", (socket) => {
       const senderEmail = Object.keys(users).find(
         (key) => users[key] === socket.id
       );
-      console.log();
 
       if (!senderEmail) {
-        console.log(`Sender email not found for socket ID: ${socket.id}`);
         return;
       }
 
@@ -323,17 +293,11 @@ io.on("connection", (socket) => {
 
         await Promise.all(notifications);
       } catch (error) {
-        console.error("Failed to create notification:", error);
         socket.emit("notificationError", "Failed to create notification");
       }
     }
   );
   socket.on("disconnect", (reason) => {
-    console.log(
-      `A user disconnected for ${reason} - Socket ID: ${
-        socket.id
-      } - Time: ${new Date().toISOString()}`
-    );
     for (const email in users) {
       if (users[email] === socket.id) {
         delete users[email];
@@ -342,22 +306,15 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("error", (error) => {
-    console.error(`Error from socket ${socket.id}: ${error}`);
-  });
+  socket.on("error", (error) => {});
 });
 
 async function bootstrap() {
   try {
     await mongoose.connect(config.database_url as string, options);
-    console.log("Database connected successfully");
 
-    httpServer.listen(config.port, () => {
-      console.log(`App listening on port ${config.port}`);
-    });
-  } catch (error) {
-    console.log(`Failed to connect: ${error}`);
-  }
+    httpServer.listen(config.port, () => {});
+  } catch (error) {}
 }
 
 bootstrap();

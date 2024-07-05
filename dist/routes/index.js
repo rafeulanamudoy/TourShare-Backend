@@ -11,6 +11,8 @@ const superAdmin_route_1 = require("../modules/users/superAdmin/superAdmin.route
 const users_route_1 = require("../modules/users/shared/users.route");
 const createTeam_route_1 = require("../modules/team/createTeam/createTeam.route");
 const joinTeam_route_1 = require("../modules/team/joinTeam/joinTeam.route");
+const messages_route_1 = require("../modules/messages/messages.route");
+const notification_route_1 = require("../modules/notification/notification.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
@@ -36,6 +38,14 @@ const moduleRoutes = [
     {
         path: "/joinTeam",
         route: joinTeam_route_1.JoinTeamRoutes,
+    },
+    {
+        path: "/messages",
+        route: messages_route_1.MessageRoutes,
+    },
+    {
+        path: "/notification",
+        route: notification_route_1.NotificationRoutes,
     },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

@@ -1,7 +1,6 @@
 import { MongoError } from "mongodb";
 import { IGenericErrorMessage } from "../interface/error";
 const duplicateError = (error: MongoError) => {
-  /// console.log(error, "duplicate error checked from server");
   const errors: IGenericErrorMessage[] = [
     {
       path: "",

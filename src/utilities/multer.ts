@@ -11,7 +11,6 @@ received by multer,
 */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // console.log(file, "check the file");
     cb(null, DIR);
   },
   filename: function (req, file, cb) {

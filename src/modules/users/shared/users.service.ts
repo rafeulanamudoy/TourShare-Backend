@@ -12,8 +12,6 @@ import { Secret } from "jsonwebtoken";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
 
 const createUser = async (user: IUser): Promise<IUserSignUpResponse | null> => {
-  // console.log(user);
-
   const createUser = await User.create(user);
   const { _id, email: userEmail, role } = createUser;
   const accessToken = jwtHelpers.createToken(
@@ -27,7 +25,6 @@ const createUser = async (user: IUser): Promise<IUserSignUpResponse | null> => {
     config.jwt.refresh_expires_in as string
   );
 
-  //console.log(createUser, 'im to check from service is user created')
   return {
     ...createUser.toObject(),
     accessToken,
@@ -42,10 +39,6 @@ const loginUser = async (
 
   const isUserExist = await User.isUserExist(email);
 
-  //console.log(isUserExist, "check user");
-
-  //console.log(password, "check user given password");
-  //console.log(isUserExist);
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, "User Doesn,t Exist");
   }
@@ -82,7 +75,7 @@ const refreshToken = async (token: string) => {
   } catch (err) {
     throw new ApiError(httpStatus.FORBIDDEN, "Invalid Refresh Token");
   }
-  console.log("verified token from service", verifiedToken);
+
   const { _id } = verifiedToken;
 
   const isUserExist = await User.findOne({ _id }, { _id: 1, role: 1 });

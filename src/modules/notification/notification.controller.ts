@@ -8,7 +8,6 @@ import { INotification } from "./notification.interface";
 
 const createNotification = catchAsync(async (req: Request, res: Response) => {
   const notification = req.body;
-  console.log(req.body, "create message");
 
   const result = await NotificationService.createNotification(notification);
 

@@ -21,7 +21,6 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
       url: cloudinaryResponse.url,
       public_id: cloudinaryResponse.public_id,
     };
-    console.log(cloudinaryResponse, "cloudenray response");
   }
   const user = {
     name: req.body.name,

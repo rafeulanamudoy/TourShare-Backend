@@ -4,7 +4,7 @@ exports.JoinTeam = void 0;
 const mongoose_1 = require("mongoose");
 const joinTeam_const_1 = require("./joinTeam.const");
 const joinTeamStatus_1 = require("../../../enums/joinTeamStatus");
-const creaTeTeamSchema = new mongoose_1.Schema({
+const JointeamSchema = new mongoose_1.Schema({
     email: {
         type: String,
         required: true,
@@ -41,4 +41,4 @@ const creaTeTeamSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-exports.JoinTeam = (0, mongoose_1.model)("JoinTeam", creaTeTeamSchema);
+exports.JoinTeam = (0, mongoose_1.model)("JoinTeam", JointeamSchema);

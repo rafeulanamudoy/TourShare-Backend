@@ -44,7 +44,7 @@ const acceptTeam = async (id: string, payload: IAccept) => {
     (person: any) =>
       person.joinTeamId.toString() === payload.joinTeamId.toString()
   );
-  console.log(joinPerson);
+
   if (!joinPerson) {
     throw new ApiError(404, "JoinTeam not found in the team.");
   }
@@ -72,7 +72,6 @@ const acceptTeam = async (id: string, payload: IAccept) => {
       (payload.status === ENUM_jOIN_TEAM_STATUS.NOTACCEPTED ||
         payload.status === ENUM_jOIN_TEAM_STATUS.PENDING)
     ) {
-      console.log("loop 2");
       const result = await CreateTeam.findOneAndUpdate(
         { _id: id },
         {

@@ -18,15 +18,12 @@ const createJoinTeam = async (payload) => {
             throw new handleApiError_1.default(400, "Invalid team ID. Team not found.");
         }
         if (team.email === payload.email) {
-            //console.log("i am in the matching email loop");
-            throw new handleApiError_1.default(400, "You are the  creator of this team.You cannot join at your own team");
+            throw new handleApiError_1.default(400, "You are the creator of this team. You cannot join your own team.");
         }
         if (team.neededMembers < payload.groupMember) {
-            throw new handleApiError_1.default(400, `this team only need ${team.neededMembers} members`);
+            throw new handleApiError_1.default(400, `This team only needs ${team.neededMembers} members.`);
         }
-        const [joinTeam] = await joinTeam_model_1.JoinTeam.create([payload], {
-            session,
-        });
+        const [joinTeam] = await joinTeam_model_1.JoinTeam.create([payload], { session });
         await createTeam_model_1.CreateTeam.findByIdAndUpdate(payload.teamInfo, {
             $push: {
                 joinPeople: {
@@ -37,7 +34,8 @@ const createJoinTeam = async (payload) => {
         }, { session });
         await session.commitTransaction();
         session.endSession();
-        return joinTeam;
+        const populatedJoinTeam = await joinTeam_model_1.JoinTeam.findById(joinTeam._id).populate("teamInfo");
+        return populatedJoinTeam;
     }
     catch (error) {
         await session.abortTransaction();
@@ -50,7 +48,7 @@ const getJointTeams = async () => {
     return result;
 };
 const getSingleJoinTeam = async (email) => {
-    const result = await joinTeam_model_1.JoinTeam.findOne({ email: email });
+    const result = await joinTeam_model_1.JoinTeam.findOne({ email: email }).populate("teamInfo");
     return result;
 };
 const updateSingleJoinTeam = async (id, payload) => {
@@ -67,7 +65,7 @@ const deleteSingleJoinTeam = async (id) => {
         if (!deleteTeam) {
             throw new handleApiError_1.default(404, "JoinTeam not found.");
         }
-        await createTeam_model_1.CreateTeam.findByIdAndUpdate(deleteTeam.teamInfo, { $pull: { joinPeople: deleteTeam._id } }, { session });
+        await createTeam_model_1.CreateTeam.findByIdAndUpdate(deleteTeam.teamInfo, { $pull: { joinPeople: { joinTeamId: deleteTeam._id } } }, { session });
         await session.commitTransaction();
         session.endSession();
         return deleteTeam;
