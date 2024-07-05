@@ -10,7 +10,6 @@ const sendResponse_1 = __importDefault(require("../../shared/sendResponse"));
 const notification_service_1 = require("./notification.service");
 const createNotification = (0, catchAsync_1.default)(async (req, res) => {
     const notification = req.body;
-    console.log(req.body, "create message");
     const result = await notification_service_1.NotificationService.createNotification(notification);
     (0, sendResponse_1.default)(res, {
         success: true,

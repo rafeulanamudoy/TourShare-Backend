@@ -10,7 +10,6 @@ const sendResponse_1 = __importDefault(require("../../shared/sendResponse"));
 const messages_service_1 = require("./messages.service");
 const createMessage = (0, catchAsync_1.default)(async (req, res) => {
     const createMessage = req.body;
-    // console.log(req.body, "create message");
     const result = await messages_service_1.MessageService.createMessage(createMessage);
     (0, sendResponse_1.default)(res, {
         success: true,

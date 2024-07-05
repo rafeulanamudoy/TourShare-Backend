@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const duplicateError = (error) => {
-    /// console.log(error, "duplicate error checked from server");
     const errors = [
         {
             path: "",
