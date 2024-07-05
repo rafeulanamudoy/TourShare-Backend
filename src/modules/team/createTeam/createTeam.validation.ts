@@ -70,22 +70,22 @@ const createTeamSchema = z.object({
       ),
     teamDetails: z
       .object({
-        description: z.string().default(""),
-        meetingPoint: z.string().default(""),
-        meetingDate: z.preprocess(
-          (arg) =>
-            typeof arg === "string" || arg instanceof Date
-              ? new Date(arg)
-              : arg,
-          z.date({
-            required_error: "Meeting date is required",
-          })
-        ),
-        meetingTime: z.string({
-          required_error: "Meeting time is required",
+        description: z.string({
+          required_error: "description is required",
+        }),
+        depurtureTime: z.string({
+          required_error: "depurtureTime is required",
+        }),
+        returnTime: z.string({
+          required_error: "returnTime is required",
+        }),
+        depurture: z.string({
+          required_error: "depurture is required",
         }),
 
-        accommodations: z.string().default(""),
+        accommodations: z.string({
+          required_error: "accommodations is required",
+        }),
         transportation: z
           .string()
           .refine(
@@ -104,7 +104,9 @@ const createTeamSchema = z.object({
             })
           )
           .optional(),
-        costBreakdown: z.string().default(""),
+        costBreakDown: z.string({
+          required_error: "Cost Break Down is required",
+        }),
         responsibilities: z
           .array(
             z.object({

@@ -71,15 +71,15 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
         type: String,
         default: "",
       },
-      meetingPoint: {
+      depurture: {
         type: String,
         default: "",
       },
-      meetingDate: {
-        type: Date,
+      depurtureTime: {
+        type: String,
         required: true,
       },
-      meetingTime: {
+      returnTime: {
         type: String,
         required: true,
       },
@@ -92,6 +92,7 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
         type: String,
         enum: transportation,
       },
+
       activities: [
         {
           activity: {
@@ -100,9 +101,9 @@ const creaTeTeamSchema = new Schema<ICreateTeam>(
           },
         },
       ],
-      costBreakdown: {
+      costBreakDown: {
         type: String,
-        default: "",
+        required: true,
       },
       responsibilities: [
         {

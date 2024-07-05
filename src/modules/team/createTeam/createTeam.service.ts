@@ -23,7 +23,10 @@ const getSingleTeamByEmail = async (email: string) => {
   return result;
 };
 const getSingleTeamById = async (id: string) => {
-  const result = await CreateTeam.findById(id);
+  const result = await CreateTeam.findById(id).populate({
+    path: "joinPeople.joinTeamId",
+    model: "JoinTeam",
+  });
   return result;
 };
 const updateSingleTeam = async (id: string, payload: Partial<ICreateTeam>) => {

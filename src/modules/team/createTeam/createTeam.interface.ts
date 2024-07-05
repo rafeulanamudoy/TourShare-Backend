@@ -3,14 +3,14 @@ import { ENUM_TEAM_STATUS } from "../../../enums/teamStatus";
 import { ENUM_jOIN_TEAM_STATUS } from "../../../enums/joinTeamStatus";
 export type ITeamDetails = {
   description: string;
-  meetingPoint: string;
-  meetingDate: Date;
-  meetingTime: string;
+  depurture: string;
+  depurtureTime: string;
+  returnTime: string;
 
   accommodations: string;
   transportation: string;
   activities?: { activity: string }[];
-  costBreakdown: string;
+  costBreakDown: string;
   responsibilities?: { responsibility: string }[];
 };
 export type ICreateTeam = {
