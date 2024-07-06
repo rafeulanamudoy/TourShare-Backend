@@ -13,6 +13,7 @@ const createTeam_route_1 = require("../modules/team/createTeam/createTeam.route"
 const joinTeam_route_1 = require("../modules/team/joinTeam/joinTeam.route");
 const messages_route_1 = require("../modules/messages/messages.route");
 const notification_route_1 = require("../modules/notification/notification.route");
+const contact_route_1 = require("../modules/contact/contact.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
@@ -46,6 +47,10 @@ const moduleRoutes = [
     {
         path: "/notification",
         route: notification_route_1.NotificationRoutes,
+    },
+    {
+        path: "/contact",
+        route: contact_route_1.ContactRoutes,
     },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

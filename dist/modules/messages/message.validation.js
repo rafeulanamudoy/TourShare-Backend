@@ -11,7 +11,7 @@ const CreateMessageSchema = zod_1.z.object({
             required_error: "sender number is Required",
         }),
         message: zod_1.z.string({
-            required_error: "Address is Required",
+            required_error: "message is Required",
         }),
     }),
 });
