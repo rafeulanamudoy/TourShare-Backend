@@ -52,7 +52,6 @@ const createUser = (0, catchAsync_1.default)(async (req, res) => {
 });
 const loginUser = (0, catchAsync_1.default)(async (req, res) => {
     const loginData = __rest(req.body, []);
-    //console.log(loginData, "check login data");
     const result = await users_service_1.UserService.loginUser(loginData);
     const cookieOptions = {
         secure: config_1.default.env === "development",
@@ -71,7 +70,6 @@ const loginUser = (0, catchAsync_1.default)(async (req, res) => {
 });
 const refreshToken = (0, catchAsync_1.default)(async (req, res) => {
     const { refreshToken } = req.cookies;
-    console.log("my cookies", req.cookies);
     const result = await users_service_1.UserService.refreshToken(refreshToken);
     const cookieOptions = {
         secure: config_1.default.env === "production",
@@ -88,7 +86,6 @@ const refreshToken = (0, catchAsync_1.default)(async (req, res) => {
 const updateSingleUser = (0, catchAsync_1.default)(async (req, res) => {
     const id = req.params.id;
     const updateData = await (0, cloudenrayUpload_1.updateUserFunction)(req, id);
-    console.log(updateData, "i am from user controller");
     const result = await users_service_1.UserService.updateSingleUser(id, updateData);
     (0, sendResponse_1.default)(res, {
         success: true,

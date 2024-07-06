@@ -57,7 +57,6 @@ userSchema.statics.isUserExist = async function (email) {
 };
 userSchema.statics.isPasswordMatched = async function (givenPassword, savedPassword) {
     const isPasswordMatched = await bcrypt_1.default.compare(givenPassword, savedPassword);
-    //console.log(isPasswordMatched, "if password matched");
     return await bcrypt_1.default.compare(givenPassword, savedPassword);
 };
 userSchema.pre("save", async function (next) {

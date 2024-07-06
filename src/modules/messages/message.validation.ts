@@ -10,7 +10,7 @@ const CreateMessageSchema = z.object({
       required_error: "sender number is Required",
     }),
     message: z.string({
-      required_error: "Address is Required",
+      required_error: "message is Required",
     }),
   }),
 });

@@ -46,7 +46,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 });
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
-  //console.log(loginData, "check login data");
+
   const result = await UserService.loginUser(loginData);
 
   const cookieOptions = {
@@ -69,7 +69,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 });
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
-  console.log("my cookies", req.cookies);
+
   const result = await UserService.refreshToken(refreshToken);
   const cookieOptions = {
     secure: config.env === "production",
@@ -89,7 +89,6 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 const updateSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updateData = await updateUserFunction(req, id);
-  console.log(updateData, "i am from user controller");
 
   const result = await UserService.updateSingleUser(id, updateData);
 
