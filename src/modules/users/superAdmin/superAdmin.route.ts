@@ -26,3 +26,8 @@ router.patch(
   multerUpload.single("profileImage"),
   UserController.updateSingleUser
 );
+router.get(
+  "/users",
+
+  UserController.getAllUsers
+);

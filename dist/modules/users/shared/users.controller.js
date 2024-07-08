@@ -114,6 +114,15 @@ const getSingleUser = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
+const getAllUsers = (0, catchAsync_1.default)(async (req, res) => {
+    const result = await users_service_1.UserService.getAllUsers();
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: "Users get  successfully",
+        data: result,
+    });
+});
 exports.UserController = {
     createUser,
     loginUser,
@@ -121,4 +130,5 @@ exports.UserController = {
     updateSingleUser,
     deleteSingleUser,
     getSingleUser,
+    getAllUsers,
 };

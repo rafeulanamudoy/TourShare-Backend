@@ -126,6 +126,17 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.getAllUsers();
+
+  sendResponse<IUser[]>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: "Users get  successfully",
+    data: result,
+  });
+});
 
 export const UserController = {
   createUser,
@@ -134,4 +145,5 @@ export const UserController = {
   updateSingleUser,
   deleteSingleUser,
   getSingleUser,
+  getAllUsers,
 };

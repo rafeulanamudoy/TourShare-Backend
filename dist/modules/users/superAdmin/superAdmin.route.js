@@ -14,3 +14,4 @@ const router = express_1.default.Router();
 exports.SuperAdminRoutes = router;
 router.post("/signUp", multer_1.multerUpload.single("profileImage"), (0, superAdminMiddleware_1.default)(), (0, validateRequest_1.default)(users_validation_1.AuthValidation.signUpZodSchema), users_controller_1.UserController.createUser);
 router.patch("/:id", multer_1.multerUpload.single("profileImage"), users_controller_1.UserController.updateSingleUser);
+router.get("/users", users_controller_1.UserController.getAllUsers);

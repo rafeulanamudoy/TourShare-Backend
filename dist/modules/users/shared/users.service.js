@@ -71,6 +71,10 @@ const getSingleUser = async (id) => {
     const user = await users_model_1.User.findById(id);
     return user;
 };
+const getAllUsers = async () => {
+    const users = await users_model_1.User.find({});
+    return users;
+};
 exports.UserService = {
     createUser,
     loginUser,
@@ -78,4 +82,5 @@ exports.UserService = {
     updateSingleUser,
     deleteSingleUser,
     getSingleUser,
+    getAllUsers,
 };
