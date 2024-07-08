@@ -12,10 +12,7 @@ const roleCheck =
       //console.log(JSON.parse(req.body.name));
       // console.log(req.file), "from roleCheck middleware";
       if (role !== requiredRole) {
-        throw new ApiError(
-          400,
-          `you are not authorized to create ${requiredRole} Account`
-        );
+        throw new ApiError(400, `you are not authorized`);
       }
       next();
     } catch (error) {

@@ -11,7 +11,7 @@ const roleCheck = (requiredRole) => async (req, res, next) => {
         //console.log(JSON.parse(req.body.name));
         // console.log(req.file), "from roleCheck middleware";
         if (role !== requiredRole) {
-            throw new handleApiError_1.default(400, `you are not authorized to create ${requiredRole} Account`);
+            throw new handleApiError_1.default(400, `you are not authorized`);
         }
         next();
     }

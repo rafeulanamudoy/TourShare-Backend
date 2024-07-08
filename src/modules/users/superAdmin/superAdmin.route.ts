@@ -17,6 +17,7 @@ router.post(
   "/signUp",
   multerUpload.single("profileImage"),
   superAdminCredential(),
+
   validateRequest(AuthValidation.signUpZodSchema),
 
   UserController.createUser
@@ -31,3 +32,4 @@ router.get(
 
   UserController.getAllUsers
 );
+router.delete("/:id", UserController.deleteSingleUser);
