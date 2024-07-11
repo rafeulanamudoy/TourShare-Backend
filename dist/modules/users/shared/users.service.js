@@ -15,12 +15,9 @@ const createUser = async (user) => {
     const verificationToken = crypto_1.default.randomBytes(32).toString("hex");
     const verificationTokenExpires = new Date(Date.now() + 3600000);
     const createUser = await users_model_1.User.create(Object.assign(Object.assign({}, user), { emailVerificationToken: verificationToken, emailVerificationTokenExpires: verificationTokenExpires }));
-    const { _id, email: userEmail, role } = createUser;
-    const accessToken = jwtHelpers_1.jwtHelpers.createToken({ _id, userEmail, role }, config_1.default.jwt.secret, config_1.default.jwt.expires_in);
-    const refreshToken = jwtHelpers_1.jwtHelpers.createToken({ _id, userEmail, role }, config_1.default.jwt.refresh_secret, config_1.default.jwt.refresh_expires_in);
+    const { email: userEmail } = createUser;
     await (0, nodmailer_1.sendVerificationEmail)(userEmail, verificationToken);
-    return Object.assign(Object.assign({}, createUser.toObject()), { accessToken,
-        refreshToken });
+    return Object.assign({}, createUser.toObject());
 };
 const loginUser = async (payload) => {
     const { email, password } = payload;

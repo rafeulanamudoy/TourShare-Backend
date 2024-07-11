@@ -21,23 +21,11 @@ const createUser = async (user: IUser): Promise<IUserSignUpResponse | null> => {
     emailVerificationTokenExpires: verificationTokenExpires,
   });
 
-  const { _id, email: userEmail, role } = createUser;
+  const { email: userEmail } = createUser;
 
-  const accessToken = jwtHelpers.createToken(
-    { _id, userEmail, role },
-    config.jwt.secret as Secret,
-    config.jwt.expires_in as string
-  );
-  const refreshToken = jwtHelpers.createToken(
-    { _id, userEmail, role },
-    config.jwt.refresh_secret as Secret,
-    config.jwt.refresh_expires_in as string
-  );
   await sendVerificationEmail(userEmail, verificationToken);
   return {
     ...createUser.toObject(),
-    accessToken,
-    refreshToken,
   };
 };
 
