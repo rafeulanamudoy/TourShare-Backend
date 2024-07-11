@@ -12,3 +12,5 @@ const router = express_1.default.Router();
 exports.UserRoutes = router;
 router.post("/signIn", (0, validateRequest_1.default)(users_validation_1.AuthValidation.loginZodSchema), users_controller_1.UserController.loginUser);
 router.get("/:id", users_controller_1.UserController.getSingleUser);
+router.patch("/verify-email", users_controller_1.UserController.verifyEmail);
+router.post("/resend-verfyEmail", users_controller_1.UserController.resendVerifyEmail);

@@ -14,8 +14,7 @@ import {
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const userBody = await setUserfunction(req);
-  console.log(req.body, "check body");
-  console.log(userBody, "processsed user body");
+
   // Check if userBody is undefined
   if (userBody === undefined) {
     // Handle the case where setUserfunction returns undefined
@@ -47,7 +46,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 });
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
-  console.log(loginData);
+
   const result = await UserService.loginUser(loginData);
 
   const cookieOptions = {
@@ -151,6 +150,19 @@ const verifyEmail = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const resendVerifyEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const result = await UserService.resendVerifyEmail(email);
+
+  sendResponse<IUser>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: " Verification Email Send Successfully",
+    data: result,
+  });
+});
+
 export const UserController = {
   createUser,
   loginUser,
@@ -160,4 +172,5 @@ export const UserController = {
   getSingleUser,
   getAllUsers,
   verifyEmail,
+  resendVerifyEmail,
 };

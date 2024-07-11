@@ -14,7 +14,7 @@ import crypto from "crypto";
 import { sendVerificationEmail } from "../../../utilities/nodmailer";
 const createUser = async (user: IUser): Promise<IUserSignUpResponse | null> => {
   const verificationToken = crypto.randomBytes(32).toString("hex");
-  const verificationTokenExpires = Date.now() + 3600000;
+  const verificationTokenExpires = new Date(Date.now() + 3600000);
   const createUser = await User.create({
     ...user,
     emailVerificationToken: verificationToken,
@@ -144,8 +144,25 @@ const verifilyEmail = async (token: string) => {
     { new: true }
   );
   if (!user) {
-    throw new ApiError(400, "Invalid or expired token");
+    throw new ApiError(400, "Token Expired.Please Resend Email Again");
   }
+  return user;
+};
+
+const resendVerifyEmail = async (email: string) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(400, "User Not Found");
+  }
+  if (user.emailVerified) {
+    throw new ApiError(400, "Email Already Verified");
+  }
+  const verificationToken = crypto.randomBytes(32).toString("hex");
+  const verificationTokenExpires = new Date(Date.now() + 3600000);
+  user.emailVerificationToken = verificationToken;
+  user.emailVerificationTokenExpires = verificationTokenExpires;
+  await user.save();
+  await sendVerificationEmail(email, verificationToken);
   return user;
 };
 export const UserService = {
@@ -157,4 +174,5 @@ export const UserService = {
   getSingleUser,
   getAllUsers,
   verifilyEmail,
+  resendVerifyEmail,
 };

@@ -28,6 +28,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
     email: req.body.email,
     role: req.body.role,
     password: req.body.password,
+
     profileImage,
   };
 

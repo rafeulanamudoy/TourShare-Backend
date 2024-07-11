@@ -45,7 +45,7 @@ const createUser = (0, catchAsync_1.default)(async (req, res) => {
         (0, sendResponse_1.default)(res, {
             success: true,
             statusCode: http_status_1.default.OK,
-            message: `${others.role} Account created successfully`,
+            message: `${others.role} Account created successfully.Please Check Your Email To Verify`,
             data: others,
         });
     }
@@ -123,6 +123,26 @@ const getAllUsers = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
+const verifyEmail = (0, catchAsync_1.default)(async (req, res) => {
+    const { token } = req.query;
+    const result = await users_service_1.UserService.verifilyEmail(token);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: " Email verified successfully",
+        data: result,
+    });
+});
+const resendVerifyEmail = (0, catchAsync_1.default)(async (req, res) => {
+    const { email } = req.body;
+    const result = await users_service_1.UserService.resendVerifyEmail(email);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: " Verification Email Send Successfully",
+        data: result,
+    });
+});
 exports.UserController = {
     createUser,
     loginUser,
@@ -131,4 +151,6 @@ exports.UserController = {
     deleteSingleUser,
     getSingleUser,
     getAllUsers,
+    verifyEmail,
+    resendVerifyEmail,
 };

@@ -250,7 +250,9 @@ io.on("connection", (socket) => {
 async function bootstrap() {
     try {
         await mongoose_1.default.connect(config_1.default.database_url, options);
-        httpServer.listen(config_1.default.port, () => { });
+        httpServer.listen(config_1.default.port, () => {
+            console.log(`server running at ${config_1.default.port}`);
+        });
     }
     catch (error) { }
 }

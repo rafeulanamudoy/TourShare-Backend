@@ -9,11 +9,16 @@ const handleApiError_1 = __importDefault(require("../../../error/handleApiError"
 const users_model_1 = require("./users.model");
 const config_1 = __importDefault(require("../../../config"));
 const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
+const crypto_1 = __importDefault(require("crypto"));
+const nodmailer_1 = require("../../../utilities/nodmailer");
 const createUser = async (user) => {
-    const createUser = await users_model_1.User.create(user);
+    const verificationToken = crypto_1.default.randomBytes(32).toString("hex");
+    const verificationTokenExpires = new Date(Date.now() + 3600000);
+    const createUser = await users_model_1.User.create(Object.assign(Object.assign({}, user), { emailVerificationToken: verificationToken, emailVerificationTokenExpires: verificationTokenExpires }));
     const { _id, email: userEmail, role } = createUser;
     const accessToken = jwtHelpers_1.jwtHelpers.createToken({ _id, userEmail, role }, config_1.default.jwt.secret, config_1.default.jwt.expires_in);
     const refreshToken = jwtHelpers_1.jwtHelpers.createToken({ _id, userEmail, role }, config_1.default.jwt.refresh_secret, config_1.default.jwt.refresh_expires_in);
+    await (0, nodmailer_1.sendVerificationEmail)(userEmail, verificationToken);
     return Object.assign(Object.assign({}, createUser.toObject()), { accessToken,
         refreshToken });
 };
@@ -75,6 +80,36 @@ const getAllUsers = async () => {
     const users = await users_model_1.User.find({});
     return users;
 };
+const verifilyEmail = async (token) => {
+    const user = await users_model_1.User.findOneAndUpdate({
+        emailVerificationToken: token,
+        emailVerificationTokenExpires: { $gt: Date.now() },
+    }, {
+        emailVerified: true,
+        emailVerificationToken: undefined,
+        emailVerificationTokenExpires: undefined,
+    }, { new: true });
+    if (!user) {
+        throw new handleApiError_1.default(400, "Token Expired.Please Resend Email Again");
+    }
+    return user;
+};
+const resendVerifyEmail = async (email) => {
+    const user = await users_model_1.User.findOne({ email });
+    if (!user) {
+        throw new handleApiError_1.default(400, "User Not Found");
+    }
+    if (user.emailVerified) {
+        throw new handleApiError_1.default(400, "Email Already Verified");
+    }
+    const verificationToken = crypto_1.default.randomBytes(32).toString("hex");
+    const verificationTokenExpires = new Date(Date.now() + 3600000);
+    user.emailVerificationToken = verificationToken;
+    user.emailVerificationTokenExpires = verificationTokenExpires;
+    await user.save();
+    await (0, nodmailer_1.sendVerificationEmail)(email, verificationToken);
+    return user;
+};
 exports.UserService = {
     createUser,
     loginUser,
@@ -83,4 +118,6 @@ exports.UserService = {
     deleteSingleUser,
     getSingleUser,
     getAllUsers,
+    verifilyEmail,
+    resendVerifyEmail,
 };

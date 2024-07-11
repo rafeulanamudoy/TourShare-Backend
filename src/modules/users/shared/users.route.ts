@@ -4,7 +4,6 @@ import { AuthValidation } from "../shared/users.validation";
 import validateRequest from "../../../middlewares/validateRequest";
 
 import { UserController } from "./users.controller";
-import { User } from "./users.model";
 
 const router = express.Router();
 
@@ -23,3 +22,4 @@ router.get(
 );
 
 router.patch("/verify-email", UserController.verifyEmail);
+router.post("/resend-verfyEmail", UserController.resendVerifyEmail);
