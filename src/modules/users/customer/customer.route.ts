@@ -15,7 +15,6 @@ export const CustomerRoutes = router;
 router.post(
   "/signUp",
 
-  // validateRequest(AuthValidation.signUpZodSchema),
   multerUpload.single("profileImage"),
 
   UserController.createUser

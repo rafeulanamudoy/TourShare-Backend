@@ -35,13 +35,8 @@ const createUser = (0, catchAsync_1.default)(async (req, res) => {
         return;
     }
     const result = await users_service_1.UserService.createUser(userBody);
-    const cookieOptions = {
-        secure: config_1.default.env === "production",
-        httpOnly: true,
-    };
-    res.cookie("refreshToken", refreshToken, cookieOptions);
     if (result !== null) {
-        const { password, refreshToken } = result, others = __rest(result, ["password", "refreshToken"]);
+        const { password } = result, others = __rest(result, ["password"]);
         (0, sendResponse_1.default)(res, {
             success: true,
             statusCode: http_status_1.default.OK,

@@ -19,10 +19,7 @@ export type IUser = {
   emailVerificationToken?: string;
   emailVerificationTokenExpires?: Date;
 };
-export type IUserSignUpResponse = IUser & {
-  accessToken: string;
-  refreshToken: string;
-};
+
 export type IUserExistReturn = {
   _id: mongoose.Types.ObjectId;
   email: string;

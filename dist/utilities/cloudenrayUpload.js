@@ -16,7 +16,6 @@ exports.setUserfunction = setUserfunction;
 const updateUserFunction = async (req, id) => {
     var _a;
     let profileImage = { url: "", public_id: "" };
-    console.log(req.body);
     if (req.file) {
         const user = await users_model_1.User.findById(id);
         if (user === null || user === void 0 ? void 0 : user.profileImage.public_id) {

@@ -1,18 +1,13 @@
 import httpStatus from "http-status";
 import ApiError from "../../../error/handleApiError";
-import {
-  IUser,
-  ILoginUser,
-  ILoginUserResponse,
-  IUserSignUpResponse,
-} from "./users.interface";
+import { IUser, ILoginUser, ILoginUserResponse } from "./users.interface";
 import { User } from "./users.model";
 import config from "../../../config";
 import { Secret } from "jsonwebtoken";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
 import crypto from "crypto";
 import { sendVerificationEmail } from "../../../utilities/nodmailer";
-const createUser = async (user: IUser): Promise<IUserSignUpResponse | null> => {
+const createUser = async (user: IUser): Promise<IUser | null> => {
   const verificationToken = crypto.randomBytes(32).toString("hex");
   const verificationTokenExpires = new Date(Date.now() + 3600000);
   const createUser = await User.create({
@@ -23,7 +18,9 @@ const createUser = async (user: IUser): Promise<IUserSignUpResponse | null> => {
 
   const { email: userEmail } = createUser;
 
-  await sendVerificationEmail(userEmail, verificationToken);
+  sendVerificationEmail(userEmail, verificationToken).catch((error) => {
+    throw new ApiError(400, error);
+  });
   return {
     ...createUser.toObject(),
   };

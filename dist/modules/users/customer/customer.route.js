@@ -9,7 +9,5 @@ const multer_1 = require("../../../utilities/multer");
 const users_controller_1 = require("../shared/users.controller");
 const router = express_1.default.Router();
 exports.CustomerRoutes = router;
-router.post("/signUp", 
-// validateRequest(AuthValidation.signUpZodSchema),
-multer_1.multerUpload.single("profileImage"), users_controller_1.UserController.createUser);
+router.post("/signUp", multer_1.multerUpload.single("profileImage"), users_controller_1.UserController.createUser);
 router.patch("/:id", multer_1.multerUpload.single("profileImage"), users_controller_1.UserController.updateSingleUser);

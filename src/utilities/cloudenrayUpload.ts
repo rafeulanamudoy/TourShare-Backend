@@ -26,8 +26,6 @@ export const setUserfunction = async (req: Request) => {
 export const updateUserFunction = async (req: Request, id: string) => {
   let profileImage = { url: "", public_id: "" };
 
-  console.log(req.body);
-
   if (req.file) {
     const user = await User.findById(id);
     if (user?.profileImage.public_id) {

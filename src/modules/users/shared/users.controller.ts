@@ -28,14 +28,9 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   }
 
   const result = await UserService.createUser(userBody);
-  const cookieOptions = {
-    secure: config.env === "production",
-    httpOnly: true,
-  };
-  res.cookie("refreshToken", refreshToken, cookieOptions);
 
   if (result !== null) {
-    const { password, refreshToken, ...others } = result;
+    const { password, ...others } = result;
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,

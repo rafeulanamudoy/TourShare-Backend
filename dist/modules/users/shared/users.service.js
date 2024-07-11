@@ -16,7 +16,9 @@ const createUser = async (user) => {
     const verificationTokenExpires = new Date(Date.now() + 3600000);
     const createUser = await users_model_1.User.create(Object.assign(Object.assign({}, user), { emailVerificationToken: verificationToken, emailVerificationTokenExpires: verificationTokenExpires }));
     const { email: userEmail } = createUser;
-    await (0, nodmailer_1.sendVerificationEmail)(userEmail, verificationToken);
+    (0, nodmailer_1.sendVerificationEmail)(userEmail, verificationToken).catch((error) => {
+        throw new handleApiError_1.default(400, error);
+    });
     return Object.assign({}, createUser.toObject());
 };
 const loginUser = async (payload) => {
