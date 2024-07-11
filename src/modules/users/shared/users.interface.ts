@@ -15,6 +15,9 @@ export type IUser = {
     public_id: string;
   };
   role: ENUM_USER_ROLE;
+  emailVerified: boolean;
+  emailVerificationToken: string;
+  emailVerificationTokenExpires: Date;
 };
 export type IUserSignUpResponse = IUser & {
   accessToken: string;

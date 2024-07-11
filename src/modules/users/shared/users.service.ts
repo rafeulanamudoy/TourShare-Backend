@@ -10,10 +10,19 @@ import { User } from "./users.model";
 import config from "../../../config";
 import { Secret } from "jsonwebtoken";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
-
+import crypto from "crypto";
+import { sendVerificationEmail } from "../../../utilities/nodmailer";
 const createUser = async (user: IUser): Promise<IUserSignUpResponse | null> => {
-  const createUser = await User.create(user);
+  const verificationToken = crypto.randomBytes(32).toString("hex");
+  const verificationTokenExpires = Date.now() + 3600000;
+  const createUser = await User.create({
+    ...user,
+    emailVerificationToken: verificationToken,
+    emailVerificationTokenExpires: verificationTokenExpires,
+  });
+
   const { _id, email: userEmail, role } = createUser;
+
   const accessToken = jwtHelpers.createToken(
     { _id, userEmail, role },
     config.jwt.secret as Secret,
@@ -24,7 +33,7 @@ const createUser = async (user: IUser): Promise<IUserSignUpResponse | null> => {
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string
   );
-
+  await sendVerificationEmail(userEmail, verificationToken);
   return {
     ...createUser.toObject(),
     accessToken,
@@ -121,6 +130,24 @@ const getAllUsers = async () => {
   return users;
 };
 
+const verifilyEmail = async (token: string) => {
+  const user = await User.findOneAndUpdate(
+    {
+      emailVerificationToken: token,
+      emailVerificationTokenExpires: { $gt: Date.now() },
+    },
+    {
+      emailVerified: true,
+      emailVerificationToken: undefined,
+      emailVerificationTokenExpires: undefined,
+    },
+    { new: true }
+  );
+  if (!user) {
+    throw new ApiError(400, "Invalid or expired token");
+  }
+  return user;
+};
 export const UserService = {
   createUser,
   loginUser,
@@ -129,4 +156,5 @@ export const UserService = {
   deleteSingleUser,
   getSingleUser,
   getAllUsers,
+  verifilyEmail,
 };

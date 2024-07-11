@@ -47,6 +47,18 @@ const userSchema = new Schema<IUser, UserModel>(
       type: String,
       required: true,
     },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerificationToken: {
+      type: String,
+      required: false,
+    },
+    emailVerificationTokenExpires: {
+      type: Date,
+      required: false,
+    },
   },
   {
     timestamps: true,

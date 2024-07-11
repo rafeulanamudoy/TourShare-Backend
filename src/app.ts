@@ -24,7 +24,7 @@ app.use(globalErrorHandler);
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(httpStatus.NOT_FOUND).json({
     success: false,
-    message: "Not Found",
+    message: "Route Not Found",
     errorMessages: [
       {
         path: req.originalUrl,

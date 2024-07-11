@@ -4,6 +4,7 @@ import { AuthValidation } from "../shared/users.validation";
 import validateRequest from "../../../middlewares/validateRequest";
 
 import { UserController } from "./users.controller";
+import { User } from "./users.model";
 
 const router = express.Router();
 
@@ -20,3 +21,5 @@ router.get(
 
   UserController.getSingleUser
 );
+
+router.patch("/verify-email", UserController.verifyEmail);

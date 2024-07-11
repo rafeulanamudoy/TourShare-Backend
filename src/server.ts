@@ -7,7 +7,6 @@ import { Notification } from "./modules/notification/notification.model";
 import { ENUM_NOTIFICATION_STATUS } from "./enums/NotificationStatus";
 import { NotificationCreateResponse } from "./modules/notification/notification.interface";
 import { Message } from "./modules/messages/messages.model";
-import { CreateTeam } from "./modules/team/createTeam/createTeam.model";
 
 const options = {
   autoIndex: true,
@@ -313,7 +312,9 @@ async function bootstrap() {
   try {
     await mongoose.connect(config.database_url as string, options);
 
-    httpServer.listen(config.port, () => {});
+    httpServer.listen(config.port, () => {
+      console.log(`server running at ${config.port}`);
+    });
   } catch (error) {}
 }
 

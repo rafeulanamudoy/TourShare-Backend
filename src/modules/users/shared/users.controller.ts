@@ -14,7 +14,8 @@ import {
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const userBody = await setUserfunction(req);
-
+  console.log(req.body, "check body");
+  console.log(userBody, "processsed user body");
   // Check if userBody is undefined
   if (userBody === undefined) {
     // Handle the case where setUserfunction returns undefined
@@ -39,14 +40,14 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: `${others.role} Account created successfully`,
+      message: `${others.role} Account created successfully.Please Check Your Email To Verify`,
       data: others,
     });
   }
 });
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
-
+  console.log(loginData);
   const result = await UserService.loginUser(loginData);
 
   const cookieOptions = {
@@ -137,6 +138,18 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const verifyEmail = catchAsync(async (req: Request, res: Response) => {
+  const { token } = req.query;
+  const result = await UserService.verifilyEmail(token as string);
+
+  sendResponse<IUser>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: " Email verified successfully",
+    data: result,
+  });
+});
 
 export const UserController = {
   createUser,
@@ -146,4 +159,5 @@ export const UserController = {
   deleteSingleUser,
   getSingleUser,
   getAllUsers,
+  verifyEmail,
 };

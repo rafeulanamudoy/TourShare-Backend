@@ -15,7 +15,7 @@ router.post(
   "/signUp",
 
   multerUpload.single("profileImage"),
-  roleCheck(ENUM_USER_ROLE.ADMIN),
+
   validateRequest(AuthValidation.signUpZodSchema),
 
   UserController.createUser
