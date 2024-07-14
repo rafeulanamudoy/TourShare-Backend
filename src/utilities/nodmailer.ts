@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendVerificationEmail = (email: string, token: string) => {
   try {
-    const verificationUrl = `http://localhost:3000/verify-email?token=${token}`;
+    const verificationUrl = `${config.front_end_url}/verify-email?token=${token}`;
 
     const mailOptions = {
       from: `TourShare <${config.nodemailer.email_user}>`,

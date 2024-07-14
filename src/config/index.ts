@@ -8,6 +8,7 @@ export default {
   database_url: process.env.DATABASE_URL,
   bycrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
   super_admin_secret_key: process.env.SUPER_ADMIN_SECRET_KEY,
+  front_end_url: process.env.FRONT_END_URL,
   cloudinary: {
     cloud_name: process.env.CLOUD_NAME,
     cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
