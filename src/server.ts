@@ -15,7 +15,7 @@ const options = {
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "*",
+    origin: `${config.front_end_url}`,
   },
   transports: ["polling", "websocket"],
   pingInterval: 25000,

@@ -10,7 +10,7 @@ const duplicateError = (error) => {
     const statusCode = 400;
     return {
         statusCode,
-        message: "Already Have a Account.Phone Number And Email Must Have To Be Unique",
+        message: "Phone Number And Email Must Have To Be Unique",
         errorCode: error.code,
         errorMessages: errors,
     };
