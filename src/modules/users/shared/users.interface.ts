@@ -30,6 +30,7 @@ export type IUserExistReturn = {
     url: string;
     public_id: string;
   };
+  emailVerified: boolean;
 };
 
 export type ILoginUser = {
@@ -50,7 +51,7 @@ export type UserModel = {
   ): Promise<
     Pick<
       IUserExistReturn,
-      "email" | "password" | "_id" | "role" | "profileImage"
+      "email" | "password" | "_id" | "role" | "profileImage" | "emailVerified"
     >
   >;
   isPasswordMatched(

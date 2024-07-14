@@ -31,6 +31,9 @@ const loginUser = async (payload) => {
         !(await users_model_1.User.isPasswordMatched(password, isUserExist.password))) {
         throw new handleApiError_1.default(http_status_1.default.UNAUTHORIZED, "Password is incorrect");
     }
+    if (isUserExist.password && !isUserExist.emailVerified) {
+        throw new handleApiError_1.default(http_status_1.default.UNAUTHORIZED, "   First Verify Your Email.Then Try To Login");
+    }
     const { _id, email: userEmail, role } = isUserExist;
     const accessToken = jwtHelpers_1.jwtHelpers.createToken({ _id, userEmail, role }, config_1.default.jwt.secret, config_1.default.jwt.expires_in);
     const refreshToken = jwtHelpers_1.jwtHelpers.createToken({ _id, userEmail, role }, config_1.default.jwt.refresh_secret, config_1.default.jwt.refresh_expires_in);

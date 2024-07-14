@@ -43,6 +43,13 @@ const loginUser = async (
   ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Password is incorrect");
   }
+
+  if (isUserExist.password && !isUserExist.emailVerified) {
+    throw new ApiError(
+      httpStatus.UNAUTHORIZED,
+      "   First Verify Your Email.Then Try To Login"
+    );
+  }
   const { _id, email: userEmail, role } = isUserExist;
   const accessToken = jwtHelpers.createToken(
     { _id, userEmail, role },
